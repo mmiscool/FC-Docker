@@ -1,0 +1,51 @@
+<script  src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+
+<button onclick='setResolution();'>hello world</button>
+<select id="commands" onchange="doCommand(this.value)">
+</select>
+
+<div id="noOfCommands" ></div>
+
+<div id="myDiv" style="height:calc( 100% - 100px); width:calc( 100% - 10px)">
+	<iframe src="./vnc_lite.html" style="height:100%; width:100%"></iframe>
+</div>
+
+
+
+<script>
+async function setResolution(){
+		y = parseInt( $("#myDiv").height());
+	  x = parseInt( $("#myDiv").width());
+	  
+	  
+	  //commandListResults = JSON.parse(await $.get('/cmd/~xrandr --fb '+ x +'x' + y));
+	  
+		doCommand('~xrandr --fb '+ x +'x' + y);
+}
+
+
+async function doCommand(commandToDo){
+	commandToDo = commandToDo.replace("@", "");
+
+
+	$( "#commands" ).empty()
+
+	commandListResults = JSON.parse(await $.get('/cmd/' + commandToDo));
+	
+	
+	for (var i = 0; i < commandListResults.length; i++) {
+	
+		$('#commands').append('<option value="' + commandListResults[i] + ' ">' + commandListResults[i] + '</option>');
+	}
+
+	$("#noOfCommands").text(commandListResults.length);
+
+	
+	
+	
+}
+
+
+
+</script>
