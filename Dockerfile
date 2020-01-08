@@ -28,13 +28,14 @@ ADD ngrok /bin/ngrok
 ENV DISPLAY :0
 
 ADD novnc novnc
+ADD icons novnc/icons
 ADD supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 #ADD Autoload_commandLister.py Autoload_commandLister.py
 ADD start.sh start.sh
 ADD hide.py /root/.FreeCAD/Macro/hide.py
 ADD localhost.conf /etc/nginx/sites-available/default
 
-ADD res.sh res.sh
+ADD resolution.py resolution.py
 CMD ["/usr/bin/supervisord"]
 
 EXPOSE 80

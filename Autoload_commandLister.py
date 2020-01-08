@@ -66,34 +66,21 @@ def actionList():
 	print( dir(actions))
 	
 	
-	myReturnList = Gui.activeWorkbench().name() + "<hr> "
+
 	#errorDialog(myReturnList)
 	
 	commandsListingArry = []
 	commandsListingArry.append(Gui.activeWorkbench().name())
 	
 	for i in actions:
-		#print(dir(actions[i]))
-
-		myReturnList = myReturnList + actions[i].objectName()
-		
 		if (actions[i].isEnabled() == True):
-			myReturnList = myReturnList + "@"
 			commandsListingArry.append(actions[i].objectName() + "@")
 		else:
 			commandsListingArry.append(actions[i].objectName())
-		myReturnList = myReturnList + ","
-		#print(dir(actions[i]))
-		#print(actions[i].objectName())
-		#print(actions[i].isEnabled())
-		#myReturnList
-		#print(dir(i))
-		#print(i.objectName)
-		#print(i.isEnabled())
 	
-	hideAllToolbars()
+	
 	return json.dumps(commandsListingArry)
-	return myReturnList(myReturnList)
+
 
 #actionList()
 
@@ -147,11 +134,16 @@ def hideAllToolbars(mode = 0 ):
 #-------------------------------------------set to full screen mode
 hideAllToolbars()
 mw.showFullScreen()
-#mw.menuBar().hide()
+mw.menuBar().hide()
 
 
 
 #--------------------------------------------------Server stuff
+currentWorkbenchName = ""
+currentWorkbenchNameKnown = False
+
+
+
 import time
 import _thread
 from http.server import HTTPServer, BaseHTTPRequestHandler
@@ -163,32 +155,34 @@ class Serv(BaseHTTPRequestHandler):
 
 	def do_GET(self):
 		#global Gui
-		global freeCadCommandToRun
+		global freeCadCommandToRun, currentWorkbenchName, currentWorkbenchNameKnown
 		print("getting the URL")
 		print(self.path)
-		#errorDialog(self.path)
+
+		myReturnMSG = "Completed"
 		try:
 			commandToRun = str(unquote(self.path))
 			commandToRun = commandToRun[1:]
-			#errorDialog(commandToRun)
-			
-			if (commandToRun.startswith("~") == True):
-				ShellCommandToRun = commandToRun[1:]
-				#errorDialog(ShellCommandToRun)
-				os.system(ShellCommandToRun)
+			if (commandToRun == "list"):
+				myReturnMSG = actionList()
 			else:
+				
 				if (commandToRun != "favicon.ico"):
 					freeCadCommandToRun = commandToRun
+					currentWorkbenchNameKnown = False
+					while currentWorkbenchNameKnown == False():
+						print("checking for workbench name change")
+					myReturnMSG = currentWorkbenchName
 				else:
 					freeCadCommandToRun = ""
-			#errorDialog(commandToRun)
-			#Gui.runCommand(commandToRun)
+
 		except:
 			print("failed command exicution")
+			myReturnMSG = "Error od some type"
+		
 		self.send_response(200)
 		self.end_headers()
-		file_to_open = actionList()
-		self.wfile.write(bytes(file_to_open, 'utf-8'))
+		self.wfile.write(bytes(myReturnMSG, 'utf-8'))
 
 def runTheServer():
 	httpd = HTTPServer(('0.0.0.0', 8000), Serv)
@@ -199,12 +193,30 @@ def runTheServer():
 
 _thread.start_new_thread(runTheServer,())
 
+
+
+
+
 while 1:
+	FreeCADGui.updateGui()
+	if (currentWorkbenchName != Gui.activeWorkbench().name()):
+		currentWorkbenchNameKnown = False
+	if (currentWorkbenchNameKnown == False):
+		currentWorkbenchName = Gui.activeWorkbench().name()
+		currentWorkbenchNameKnown = True
+		hideAllToolbars()
+	
+	
 	#time.sleep(.001)
 	if (freeCadCommandToRun != ""):
+		hideAllToolbars()
 		blablablabla = freeCadCommandToRun
 		freeCadCommandToRun = ""
-		dir(Gui.runCommand(blablablabla))
+		try:
+			dir(Gui.runCommand(blablablabla))
+		except:
+			errorDialog("Error, Some thing did not work : " +blablablabla)
+		hideAllToolbars()
 	FreeCADGui.updateGui()
 	
 

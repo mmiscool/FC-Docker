@@ -1,51 +1,130 @@
 <script  src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
 
 
-<button onclick='setResolution();'>hello world</button>
-<select id="commands" onchange="doCommand(this.value)">
-</select>
+<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/themes/smoothness/jquery-ui.css">
 
-<div id="noOfCommands" ></div>
 
-<div id="myDiv" style="height:calc( 100% - 100px); width:calc( 100% - 10px)">
-	<iframe src="./vnc_lite.html" style="height:100%; width:100%"></iframe>
+<div id="application" style="width:100%; height:100%;">
+	<div style="width:calc(100% - 10px); height: 165px; overflow-y: scroll;">
+		<button onclick='setResolution();'>Resize Screen</button>
+		<select id="commands" onchange="doCommand(this.value)">
+		</select>
+		<button onclick='showCommadsList()'>Get List Of Commands</button>
+		<button onclick='$("#settings").show(); $("#application").hide();'>Go to settings screen</button>
+		
+		<div id="noOfCommands" ></div>
+		
+		<div id="commandIcons" style="width:calc(100% - 10px); height: 100px; overflow-y: scroll;"></div>
+	</div>
+	
+	<div id="myDiv" style="height:calc( 100% - 175px); width:calc( 100% - 10px)">
+		<iframe src="./vnc.html?autoconnect=true&reconnect=true&reconnect_delay=5000&resize=remote" style="height:100%; width:100%">
+		</iframe>
+	</div>
+</div>
+
+<div id="settings" style="width:100%; height:100%;">
+	<button onclick='$("#settings").hide(); $("#application").show();'>Go to application</button>
+	<div id="iconPalletForSettings" style="width:100%; height: 150px; overflow-y: scroll;"></div>
 </div>
 
 
 
+
+
 <script>
+$("#settings").hide();
+
+window.onresize = setResolution;
+
+setTimeout(callAfterLoading, 10000);
+
+var listOfIcons;
+
+
+
+async function loadIconPalletForSettings(){
+
+	for (var i = 0; i < listOfIcons.length; i++) {
+		currentIcon = listOfIcons[i];
+			$('#iconPalletForSettings').append($('<img>',
+			{
+				id:'',
+				alt: currentIcon,
+				src:'icons/' + currentIcon,
+				onclick:"alert('" + currentIcon +"')",
+				title: currentIcon,
+				width: "50px",
+				height: "50px",
+			}));
+	}
+}
+
+
+
+
+
+
+async function callAfterLoading(){
+	iconlist = await $.get('/icons/list.txt');
+	listOfIcons = iconlist.replace(/\r\n/g,"\n").split("\n");
+	
+	loadIconPalletForSettings();
+	setResolution();
+	doCommand("");
+}
+
 async function setResolution(){
 		y = parseInt( $("#myDiv").height());
 	  x = parseInt( $("#myDiv").width());
-	  
-	  
-	  //commandListResults = JSON.parse(await $.get('/cmd/~xrandr --fb '+ x +'x' + y));
-	  
-		doCommand('~xrandr --fb '+ x +'x' + y);
+		await $.get('/res/' + '~xrandr --fb '+ x +'x' + y)
 }
 
 
 async function doCommand(commandToDo){
 	commandToDo = commandToDo.replace("@", "");
+	await $.get('/cmd/' + commandToDo);
+}
 
-
+async function showCommadsList(){
 	$( "#commands" ).empty()
+	$( "#commandIcons" ).empty()
 
-	commandListResults = JSON.parse(await $.get('/cmd/' + commandToDo));
+	commandListResults = JSON.parse(await $.get('/cmd/list'));
 	
+	localStorage.setItem(commandListResults[0], JSON.stringify(commandListResults));
 	
 	for (var i = 0; i < commandListResults.length; i++) {
-	
-		$('#commands').append('<option value="' + commandListResults[i] + ' ">' + commandListResults[i] + '</option>');
+		currentCommand = commandListResults[i].replace("@", "");
+		if (currentCommand.includes("_")){
+			
+			$('#commands').append('<option value="' + commandListResults[i] + ' ">' + commandListResults[i] + '</option>');
+			$('#commandIcons').append($('<img>',
+			{
+				id:'',
+				alt: currentCommand,
+				src:'icons/' + currentCommand + '.svg',
+				onclick:"doCommand('" + currentCommand +"')",
+				title: currentCommand,
+			}));
+		}
+
 	}
 
-	$("#noOfCommands").text(commandListResults.length);
+	$("#noOfCommands").text(commandListResults.length + "   " + commandListResults[0]);
+}
 
-	
-	
+
+
+workbenches = ["PartDesignWorkbench", "SketcherWorkbench"]
+
+async function showToolBar(workbenchName){
+	$("#workbench_" + workbenchName).show();
 	
 }
 
+showToolBar("PartDesignWorkbench");
 
 
 </script>
