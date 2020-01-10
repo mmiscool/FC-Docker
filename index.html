@@ -6,17 +6,16 @@
 
 
 <div id="application" style="width:100%; height:100%;">
-	<div style="width:calc(100% - 10px); height: 165px; overflow-y: scroll;">
-		<button onclick='setResolution();'>Resize Screen</button>
-		<select id="commands" onchange="doCommand(this.value)"></select>
-		<button onclick='$("#settings").show(); $("#application").hide();'>Go to settings screen</button>
+	<div style="width:calc(100% - 10px); height: 185px; overflow-y: scroll;">
 		
-		<div id="noOfCommands" ></div>
+		<select id="commands" onchange="doCommand(this.value);"></select>
+		<button onclick='$("#settings").show(); $("#application").hide();' >Settings</button>
+	
 		
-		<div id="commandIcons" style="width:calc(100% - 10px); height: 120px; overflow-y: scroll;"></div>
+		<div id="commandIcons" style="width:calc(100% - 10px); height: 145px; overflow-y: scroll; border-style: dotted;"></div>
 	</div>
 	
-	<div id="myDiv" style="height:calc( 100% - 175px); width:calc( 100% - 10px)">
+	<div id="myDiv" style="height:calc( 100% - 195px); width:calc( 100% - 10px)">
 		<iframe src="./vnc.html?autoconnect=true&reconnect=true&reconnect_delay=5000&resize=remote" style="height:100%; width:100%"></iframe>
 	</div>
 </div>
@@ -24,8 +23,7 @@
 <div id="settings" style="width:100%; height:100%;">
 	<button onclick='$("#settings").hide(); $("#application").show();'>Go to application</button>
 	<button onclick="localStorage.setItem('FC ICON SETTINGS', JSON.stringify(toolbarGlobalObject));">Save Settings</button>
-	<button onclick="toolbarGlobalObject = JSON.parse(localStorage.getItem('FC ICON SETTINGS')); showCommads(); showToolGroupListEditor()">Load Settings</button>
-	<button onclick="$('#toolGroupEditor').hide(); $('#iconEditor').show();settingsEditorMode='icons';">Icon Editor</button>
+	<button onclick="$('#toolGroupEditor').hide(); $('#iconEditor').show();settingsEditorMode='icons';showToolGroupListEditor();">Icon Editor</button>
 	<button onclick="$('#iconEditor').hide(); $('#toolGroupEditor').show();settingsEditorMode='toolGroups';">Tool Group Editor</button>
 	<br>
 	
@@ -71,11 +69,12 @@
 <script>
 $("#settings").hide();
 $("#toolGroupEditor").hide()
+$("#commands").hide()
 settingsEditorMode='icons';
 
 window.onresize = setResolution;
 
-setTimeout(callAfterLoading, 4000);
+setTimeout(callAfterLoading, 5000);
 
 
 
@@ -119,7 +118,91 @@ async function showToolGroupListCommandsEditor(){
 		currentIcon = toolbarGlobalObject.toolGroups[toolGroupNumberToBeEdited].icons[i];
 		$('#toolGroupEditorCommandList').append('<option value=' + i + ' >' + currentIcon + '</option>');
 	}
+	buildToolGroupPalletDivs();
 }
+
+
+
+async function buildToolGroupPalletDivs(){
+	$( "#commandIcons" ).empty();
+	
+	for (var x = 0; x < toolbarGlobalObject.toolGroups.length; x++) {
+		currentGroup = toolbarGlobalObject.toolGroups[x];
+		console.log(currentGroup.name)
+		
+		//need to create the div and calcualte width of div
+		
+	
+		widthOfDivCalculated = 40* Math.ceil((currentGroup.icons.length + .001) / 3);
+	
+			tooGroupDiv = {
+				id:"toolGroup_" + currentGroup.name,
+				alt: currentCommand.command,
+				style:"border-style: dotted;overflow:hidden; float:left; height:145px;width:" + widthOfDivCalculated + "px;"
+
+			};
+		
+			
+			
+			$('#commandIcons').append($('<div>', tooGroupDiv));
+
+			$('#toolGroup_' + currentGroup.name).html( currentGroup.name + "<br>");
+		
+		
+		for (var i = 0; i < currentGroup.icons.length; i++) {
+			currentIcon = currentGroup.icons[i];
+			console.log(currentIcon);
+			
+			
+			
+			
+			
+			
+			
+			
+			//needs to be worked out how to get the command from the command name
+			currentCommand = await toolbarGlobalObject.commandList.find(obj => {return obj.command === currentIcon});
+
+	
+			commandButtonSettings = {
+				id:'',
+				alt: currentCommand.command,
+				src:'icons/' + currentCommand.iconFile + '.svg',
+				onclick:"doCommand('" + currentCommand.command +"')",
+				title: currentCommand.toolTip,
+				width: "40px",
+				height: "40px",
+			};
+		
+			
+			
+			$('#toolGroup_' + currentGroup.name).append($('<img>', commandButtonSettings));
+			//---------------------------------
+			
+			
+		}
+		
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -175,7 +258,20 @@ async function loadIconPalletForSettings(){
 async function callAfterLoading(){
 	loadIconPalletForSettings();
 	setResolution();
-	showCommads();
+
+	try {
+		settingsFromBrowserStorage = localStorage.getItem('FC ICON SETTINGS');
+		//alert(settingsFromBrowserStorage);
+		if (settingsFromBrowserStorage) toolbarGlobalObject = JSON.parse(localStorage.getItem('FC ICON SETTINGS'));
+	}
+	catch(err) {
+	  console.log("No user settings present.")
+	}
+	
+	
+	await showCommads();
+	await buildToolGroupPalletDivs();
+
 }
 
 async function setResolution(){
@@ -219,17 +315,13 @@ async function showCommads(){
 			height: "40px",
 		};
 		
-		$('#commandIcons').append($('<img>', commandButtonSettings));
+		//$('#commandIcons').append($('<img>', commandButtonSettings));
 		
 		commandButtonSettings.onclick ="editCommandIcon('" + i +"')"
 		
 		
 		$('#commandsEditorList').append($('<img>', commandButtonSettings));
 		$('#commandsEditorList').append( currentCommand.command + "<br>");
-		
-		
-		
-
 		
 	}
 
