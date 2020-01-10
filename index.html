@@ -4,6 +4,8 @@
 
 <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/themes/smoothness/jquery-ui.css">
 
+<link rel="stylesheet" href="w2ui-1.5.rc1.min.css">
+<javascript src="w2ui-1.5.rc1.min.js"></javascript>
 
 <style>
 	body {
@@ -26,7 +28,7 @@
 	</div>
 </div>
 
-<div id="settings" style="width:100%; height:100%;">
+<div id="settings" style="height:calc( 100% - 195px); width:calc( 100% - 0px)">
 	<button onclick='$("#settings").hide(); $("#application").show();'>Go to application</button>
 	<button onclick="localStorage.setItem('FC ICON SETTINGS', JSON.stringify(toolbarGlobalObject));
 		output = JSON.stringify(toolbarGlobalObject);
@@ -93,6 +95,56 @@ document.body.removeChild(a);
 $("#settings").hide();
 $("#toolGroupEditor").hide()
 $("#commands").hide()
+$('#commandIcons').contextmenu(function() {
+    return false;
+});
+
+
+
+
+
+
+
+
+function allowDrop(ev) {
+  ev.preventDefault();
+}
+
+function drag(ev) {
+  ev.dataTransfer.setData("text", ev.target.id);
+}
+
+function drop(ev) {
+  ev.preventDefault();
+
+  ev.target.append(bla);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 settingsEditorMode='icons';
 
 window.onresize = setResolution;
@@ -340,6 +392,9 @@ async function showCommads(){
 			title: currentCommand.toolTip,
 			width: "40px",
 			height: "40px",
+			draggabl: true,
+			ondragstart:"currentPaletIconBeingDragged = '" + currentCommand.command + "'; alert(currentPaletIconBeingDragged)",
+			
 		};
 		
 		//$('#commandIcons').append($('<img>', commandButtonSettings));
