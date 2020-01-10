@@ -128,7 +128,8 @@ async function buildToolGroupPalletDivs(){
 	
 	for (var x = 0; x < toolbarGlobalObject.toolGroups.length; x++) {
 		currentGroup = toolbarGlobalObject.toolGroups[x];
-		console.log(currentGroup.name)
+		console.log(currentGroup.name);
+		currentGroup.name = currentGroup.name.replace(" ", "_");
 		
 		//need to create the div and calcualte width of div
 		
