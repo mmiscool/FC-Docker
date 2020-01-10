@@ -5,26 +5,49 @@
 <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/themes/smoothness/jquery-ui.css">
 
 
+<style>
+	body {
+  background-color: #878f99;
+}
+</style>
+
 <div id="application" style="width:100%; height:100%;">
-	<div style="width:calc(100% - 10px); height: 185px; overflow-y: scroll;">
+	<div style="width:calc(100% - 0px); height: 185px; ">
 		
 		<select id="commands" onchange="doCommand(this.value);"></select>
 		<button onclick='$("#settings").show(); $("#application").hide();' >Settings</button>
 	
 		
-		<div id="commandIcons" style="width:calc(100% - 10px); height: 145px; overflow-y: scroll; border-style: dotted;"></div>
+		<div id="commandIcons" style="width:calc(100% - 0px); height: 145px; overflow-y: scroll; border-style: dotted;"></div>
 	</div>
 	
-	<div id="myDiv" style="height:calc( 100% - 195px); width:calc( 100% - 10px)">
+	<div id="myDiv" style="height:calc( 100% - 195px); width:calc( 100% - 0px)">
 		<iframe src="./vnc.html?autoconnect=true&reconnect=true&reconnect_delay=5000&resize=remote" style="height:100%; width:100%"></iframe>
 	</div>
 </div>
 
 <div id="settings" style="width:100%; height:100%;">
 	<button onclick='$("#settings").hide(); $("#application").show();'>Go to application</button>
-	<button onclick="localStorage.setItem('FC ICON SETTINGS', JSON.stringify(toolbarGlobalObject));">Save Settings</button>
-	<button onclick="$('#toolGroupEditor').hide(); $('#iconEditor').show();settingsEditorMode='icons';showToolGroupListEditor();">Icon Editor</button>
-	<button onclick="$('#iconEditor').hide(); $('#toolGroupEditor').show();settingsEditorMode='toolGroups';">Tool Group Editor</button>
+	<button onclick="localStorage.setItem('FC ICON SETTINGS', JSON.stringify(toolbarGlobalObject));
+		output = JSON.stringify(toolbarGlobalObject);
+		//window.open().document.write(output);
+		
+		
+var a = window.document.createElement('a');
+a.href = window.URL.createObjectURL(new Blob([output], {type: 'text/json'}));
+a.download = 'settings.json';
+
+// Append anchor to body.
+document.body.appendChild(a);
+a.click();
+
+// Remove anchor from body
+document.body.removeChild(a);
+		
+	
+	">Save Settings</button>
+	<button onclick="$('#toolGroupEditor').hide(); $('#iconEditor').show();settingsEditorMode='icons';">Icon Editor</button>
+	<button onclick="$('#iconEditor').hide(); $('#toolGroupEditor').show();settingsEditorMode='toolGroups';showToolGroupListEditor();">Tool Group Editor</button>
 	<br>
 	
 	<div id="commandsEditorList"  style="height:calc(100% - 50px); width:300px; overflow-y: scroll;  display: inline-block;"></div>
@@ -260,14 +283,17 @@ async function callAfterLoading(){
 	loadIconPalletForSettings();
 	setResolution();
 
-	try {
-		settingsFromBrowserStorage = localStorage.getItem('FC ICON SETTINGS');
-		//alert(settingsFromBrowserStorage);
-		if (settingsFromBrowserStorage) toolbarGlobalObject = JSON.parse(localStorage.getItem('FC ICON SETTINGS'));
+
+	settingsFromBrowserStorage = localStorage.getItem('FC ICON SETTINGS');
+	//alert(settingsFromBrowserStorage);
+	if (settingsFromBrowserStorage) {
+		toolbarGlobalObject = await JSON.parse(await localStorage.getItem('FC ICON SETTINGS'));
 	}
-	catch(err) {
-	  console.log("No user settings present.")
+	else{
+	  console.log("No user settings present. Loading from settings file on server");
+	  toolbarGlobalObject = await $.get('/icons/settings.json');
 	}
+
 	
 	
 	await showCommads();
@@ -362,53 +388,6 @@ async function saveCommandIcon(){
 toolbarGlobalObject.listOfIcons =
 [
   "3D_Printing_Tools_workbench_icon",
-  "A0_Landscape_blank",
-  "A0_Landscape_CN",
-  "A0_Landscape_ISO7200_Pep",
-  "A0_Landscape_ISO7200",
-  "A0_Landscape_ISO7200TD",
-  "A0_Landscape_plain",
-  "A0_Portrait_plain",
-  "A1_Landscape_blank",
-  "A1_Landscape_CN",
-  "A1_Landscape_ISO7200_Pep",
-  "A1_Landscape_ISO7200",
-  "A1_Landscape_ISO7200TD",
-  "A1_Landscape_plain",
-  "A1_Portrait_plain",
-  "A2_Landscape_blank",
-  "A2_Landscape_CN",
-  "A2_Landscape_ISO7200_Pep",
-  "A2_Landscape_ISO7200",
-  "A2_Landscape_ISO7200TD",
-  "A2_Landscape_plain",
-  "A2plus_workbench_icon",
-  "A2_Portrait_plain",
-  "A3_Landscape_blank",
-  "A3_Landscape_CN",
-  "A3_Landscape_EN_m52",
-  "A3_Landscape_FR_m52",
-  "A3_Landscape_ISO7200_Pep",
-  "A3_Landscape_ISO7200",
-  "A3_Landscape_ISO7200TD",
-  "A3_Landscape_IT_m52",
-  "A3_Landscape_plain",
-  "A3_Landscape",
-  "A3_LandscapeTD",
-  "A3_Portrait_plain",
-  "A4_Landscape_blank",
-  "A4_Landscape_CN",
-  "A4_Landscape_ISO7200_Pep",
-  "A4_Landscape_ISO7200",
-  "A4_Landscape_ISO7200TD",
-  "A4_Landscape_plain",
-  "A4_Landscape",
-  "A4_LandscapeTD",
-  "A4_Portrait_blank",
-  "A4_Portrait_ISO7200Pep",
-  "A4_Portrait_ISO7200",
-  "A4_Portrait_ISO7200TD",
-  "A4_Portrait_plain",
   "accessories-calculator",
   "accessories-text-editor",
   "AddonManager",

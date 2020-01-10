@@ -1,3 +1,6 @@
+#(C) Michael Molinari 2019
+
+
 #--------------------------------------------------Server stuff
 import time
 import _thread

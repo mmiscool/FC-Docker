@@ -17,20 +17,17 @@ RUN apt update
 RUN apt install solvespace freecad -y
 RUN apt install supervisor -y
 RUN apt install nginx -y
-RUN apt install thunar -y
-RUN apt install firefox -y
-RUN apt install mousepad -y
+#RUN apt install thunar -y
+#RUN apt install firefox -y
+#RUN apt install mousepad -y
 RUN apt install x11-xserver-utils -y
 
-
-ADD ngrok /bin/ngrok
 
 ENV DISPLAY :0
 
 ADD novnc novnc
 ADD icons novnc/icons
 ADD supervisord.conf /etc/supervisor/conf.d/supervisord.conf
-#ADD Autoload_commandLister.py Autoload_commandLister.py
 ADD start.sh start.sh
 ADD hide.py /root/.FreeCAD/Macro/hide.py
 ADD localhost.conf /etc/nginx/sites-available/default
