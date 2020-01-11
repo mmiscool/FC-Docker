@@ -23,14 +23,21 @@ div {
 
 </style>
 
-<div  style="width:calc(100% - 10px); height:calc(100% - 10px);" onclick="$('#toolBarRightClickMenue').hide();">
-  <div style="width:calc(100% - 0px); height: 145px; ">
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <select id="commands" onchange="doCommand(this.value);"></select>
+<div onclick="$('#fileManager').show()" style="height: 50px; position: absolute; top:1px; right:1px; appearance: button; margin:10px;border-style: solid;background-color: white;"><h4>File manager</h4></div>
+
+
+<div  style="width:calc(100% - 10px); height:calc(100% - 10px);" onclick="$('#toolBarRightClickMenue').hide();">
+  <div style="width:calc(100% - 0px); height: 155px; ">
+
+    <select id="commands" onchange="doCommand(this.value);">
+    	<h1>Loading Tool Bars. Please wait</h1>
+    </select>
     
 
 
-    <div id="commandIcons" style="width:calc(100% - 0px); height: 150px; overflow-x: scroll; border-style: dotted;"
+    <div id="commandIcons" style="width:calc(100% - 0px); height: 155px; overflow-x: scroll; border-style: dotted;"
     oncontextmenu="
     groupListIconRightClick(null ,null , event);
     return false;
@@ -38,8 +45,8 @@ div {
     "></div>
   </div>
 
-  <div id="application" style="height:calc(100% - 155px); width:calc(100% - 2px)">
-    <iframe src="./vnc.html?autoconnect=true&reconnect=true&reconnect_delay=5000&resize=remote" style="height:100%; width:100%;"></iframe>
+  <div id="application" style="height:calc(100% - 165px); width:calc(100% - 2px); padding:0px;">
+   
   </div>
   <div id="settings" style="height:calc(100% - 195px); width:calc( 100% - 0px); overflow: scroll;">
 		<button onclick='currentAplicationMode = "app"; $("#settings").hide(); $("#application").show();'>Close Icon Editor</button>
@@ -69,6 +76,23 @@ div {
   background-color: white;">
 </div>
 
+<div id="fileManager" style="position: fixed;
+  top: 25px;
+  left: 25px;
+  bottom: 25px;
+  right: 25px;
+  border: 3px solid RED;
+  background-color: white;">
+	<button onclick="$('#fileManagerIframe').attr('src', './files/')">Refresh</button>
+	<button onclick="$('#fileManager').hide()" style="position:Absolute;right:0px; top:0px; background-color:red; ">X</button>
+	<br>
+	<div style="position:Absolute; top:25px; bottom:0px; left:0px;right:0px;">
+		<iframe id="fileManagerIframe" src="./files/" style="width:100%; height:100%;" ></iframe>
+	</div>
+	
+</div>
+
+
 
 
 
@@ -77,59 +101,30 @@ div {
   $("#toolGroupEditor").hide()
   $("#commands").hide()
   $('#toolBarRightClickMenue').hide();
-
-
-
-
-
-
-
-
-
-  function allowDrop(ev) {
-    ev.preventDefault();
-  }
-
-  function drag(ev) {
-    ev.dataTransfer.setData("text", ev.target.id);
-  }
-
-  function drop(ev) {
-    ev.preventDefault();
-
-    ev.target.append(bla);
-  }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+  $('#fileManager').hide()
 
 	currentAplicationMode = "app";
 
 
+	
+
+	if(getUrlVars("autoconnect")){
+		window.history.pushState('FreeCAD', 'FreeCAD', '?autoconnect=true&reconnect=true&reconnect_delay=5000&resize=remote');
+	}
+
+
+	function getUrlVars() {
+	    var vars = {};
+	    var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
+	        vars[key] = value;
+	    });
+	    return vars;
+	}
+
+
   window.onresize = setResolution;
 
-  setTimeout(callAfterLoading, 5000);
+  setTimeout(callAfterLoading, 1000);
 
 
 
@@ -260,7 +255,7 @@ Array.prototype.move = function(from,to){
 
 
     newButtonStuff = {
-    	onclick: `currentAplicationMode = "iconEditor"; $("#settings").show(); $("#application").hide();buildToolGroupPalletDivs();`,
+    	onclick: `currentAplicationMode = "iconEditor";  loadIconPalletForSettings(); $("#settings").show(); $("#application").hide();buildToolGroupPalletDivs();`,
     	text:"Edit Icons",
     };
     $('#toolBarRightClickMenue').append($('<button>', newButtonStuff));
@@ -432,26 +427,30 @@ currentPaletIconBeingDragged = null
   }
 
 
-
+	iconPalletAlreadyLoaded = false;
   async function loadIconPalletForSettings() {
-    $('#iconPalletForSettings').empty();
+  	if(!iconPalletAlreadyLoaded){
+	    $('#iconPalletForSettings').empty();
+	
+	    iconlist = await $.get('/icons/list.txt');
+	    toolbarGlobalObject.listOfIcons = iconlist.replace(/\r\n/g, "\n").split("\n");
+	
+	
+	    for (var i = 0; i < toolbarGlobalObject.listOfIcons.length; i++) {
+	      currentIcon = toolbarGlobalObject.listOfIcons[i];
+	      $('#iconPalletForSettings').append($('<img>', {
+	        id: '',
+	        alt: currentIcon,
+	        src: 'icons/' + currentIcon,
+	        onclick: "$('#commandEditor_iconFile').val('" + currentIcon.replace(".svg", "") + "')",
+	        title: currentIcon,
+	        width: "40px",
+	        height: "40px",
+	      }));
+	    }
+  	}
+  	
 
-    iconlist = await $.get('/icons/list.txt');
-    toolbarGlobalObject.listOfIcons = iconlist.replace(/\r\n/g, "\n").split("\n");
-
-
-    for (var i = 0; i < toolbarGlobalObject.listOfIcons.length; i++) {
-      currentIcon = toolbarGlobalObject.listOfIcons[i];
-      $('#iconPalletForSettings').append($('<img>', {
-        id: '',
-        alt: currentIcon,
-        src: 'icons/' + currentIcon,
-        onclick: "$('#commandEditor_iconFile').val('" + currentIcon.replace(".svg", "") + "')",
-        title: currentIcon,
-        width: "40px",
-        height: "40px",
-      }));
-    }
   }
 
 
@@ -462,7 +461,28 @@ currentPaletIconBeingDragged = null
 
 
   async function callAfterLoading() {
-    loadIconPalletForSettings();
+		//alert("doing the set up");
+
+
+    //await $("#application").load('./vnc.html');
+
+
+
+	  await $("#application").load('./vnc.html', function(responseTxt, statusTxt, xhr){
+
+			$("#noVNC_control_bar_anchor").hide();
+			$("#noVNC_container").css('border-bottom-right-radius', 0);
+			$("body").css('background-color', "#878f99");
+
+
+
+
+
+	    if(statusTxt == "error")
+	      alert("Error: " + xhr.status + ": " + xhr.statusText);
+	  });
+
+    
     setResolution();
 
 
@@ -473,19 +493,22 @@ currentPaletIconBeingDragged = null
     }
     else {
       console.log("No user settings present. Loading from settings file on server");
-      toolbarGlobalObject = await $.get('/icons/settings.json');
+      toolbarGlobalObject = await $.get('/files/settings.json');
     }
 
+		//loadIconPalletForSettings();
 
+    showCommads();
+    buildToolGroupPalletDivs();
+    
 
-    await showCommads();
-    await buildToolGroupPalletDivs();
+    
 
   }
 
   async function setResolution() {
-    yyy = parseInt($("#application").height());
-    xxx = parseInt($("#application").width());
+    yyy = parseInt($("#application").height()) - 1;
+    xxx = parseInt($("#application").width()) - 1;
     await $.get('/res/' + '~xrandr --fb ' + xxx + 'x' + yyy);
   }
 
@@ -494,6 +517,15 @@ currentPaletIconBeingDragged = null
   	if (currentAplicationMode == "iconEditor"){
   		editCommandIcon(await findWithAttr(toolbarGlobalObject.commandList, "command", commandToDo ));
   	}else{
+  		if($("#noVNC_keyboardinput").length ){
+  			$("#noVNC_keyboardinput").focus();
+  		}else{
+  			$( "canvas" ).get( 0 ).focus();
+  		}
+  		
+
+
+  		
 	    commandToDo = commandToDo.replace("@", "");
 	    await $.get('/cmd/' + commandToDo);
   	}

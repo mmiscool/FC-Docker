@@ -1,1 +1,1 @@
-freecad /root/Autoload_commandLister.py
+freecad /server.py --log-file /root/FC-log.txt

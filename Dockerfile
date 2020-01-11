@@ -21,22 +21,29 @@ RUN apt update \
 		&& apt-get autoremove --yes \
 		&& rm -rf /var/lib/{apt,dpkg,cache,log}/
 
+EXPOSE 80
+
 WORKDIR /root/
+RUN mkdir /root/.FreeCAD
+
 
 ENV DISPLAY :0
-
-ADD novnc novnc
-ADD icons novnc/icons
+ADD fileServer /fileServer
+ADD novnc /novnc
+ADD icons /novnc/icons
 ADD supervisord.conf /etc/supervisor/conf.d/supervisord.conf
-ADD start.sh start.sh
+ADD start.sh /start.sh
 
 ADD localhost.conf /etc/nginx/sites-available/default
 
-ADD resolution.py resolution.py
+ADD resolution.py /resolution.py
 CMD ["/usr/bin/supervisord"]
 
-EXPOSE 80
-ADD Autoload_commandLister.py Autoload_commandLister.py
-ADD index.html novnc/index.html
-ADD fileServer /fileServer
-EXPOSE 8000S
+
+ADD server.py /server.py
+
+ADD settings.json settings.json
+ADD user.cfg /root/.FreeCAD/user.cfg
+RUN ln /root/.FreeCAD/user.cfg /root/user.cfg
+ADD index.html /novnc/index.html
+
