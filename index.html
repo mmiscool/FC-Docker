@@ -20,6 +20,18 @@
     border-width: thin;
     overflow: hidden;
   }
+  
+  
+::-webkit-scrollbar {
+  -webkit-appearance: none;
+  width: 25px;
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: 5px;
+  background-color: rgba(0,0,0,.5);
+  -webkit-box-shadow: 0 0 1px rgba(255,255,255,.5);
+}
 </style>
 
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -105,15 +117,15 @@
   border: 3px solid RED;
   background-color: white;">
   <button onclick="runPythonConsole(false);" style="top:50px;height:50px;">clear</button>
-  <textarea id="pythonCodeArea" style="width:calc(100% - 150px);top:50px;">print("hello world")</textarea>
+  <textarea id="pythonCodeArea" style="top:50px;height:50px;width:calc(100% - 150px);">print("hello world")</textarea>
   
   
   <button onclick="runPythonConsole();" style="top:50px;height:50px;">Send</button>
   <button onclick="$('#pythonConsole').hide()" style="position:Absolute;right:0px; top:0px; background-color:red; ">X</button>
   <br>
   <div style="position:Absolute; top:100px; bottom:0px; left:0px;right:0px">
-    <div id="pythonCodeResponseAreaA" style="width:100%;height:50%;white-space:pre;overflow:scroll;"></div>
-    <div id="pythonCodeResponseAreaB" style="width:100%;height:50%;white-space:pre;overflow:scroll;"></div>
+    <div id="pythonCodeResponseAreaA" style="width:100%;height:50%;white-space:pre;overflow:scroll;font-family: monospace;"></div>
+    <div id="pythonCodeResponseAreaB" style="width:100%;height:50%;white-space:pre;overflow:scroll;font-family: monospace;"></div>
   </div>
   
   

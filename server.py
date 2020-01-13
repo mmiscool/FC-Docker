@@ -134,14 +134,14 @@ def hideAllToolbars(mode = 0 ):
 #-------------------------------------------set to full screen mode
 hideAllToolbars()
 mw.showFullScreen()
-mw.menuBar().hide()
-
+#mw.menuBar().hide()
+mw.findChild(QtGui.QDockWidget, "Combo View").show()
 
 
 #--------------------------------------------------Server stuff
 currentWorkbenchName = ""
 currentWorkbenchNameKnown = False
-
+myReturnMSG = ""
 
 
 import time
@@ -150,38 +150,35 @@ from http.server import HTTPServer, BaseHTTPRequestHandler
 from urllib.parse import unquote
 
 
+
+
 class Serv(BaseHTTPRequestHandler):
-	print("Hello world")
 
 	def do_GET(self):
 		#global Gui
-		global freeCadCommandToRun, currentWorkbenchName, currentWorkbenchNameKnown
+		global freeCadCommandToRun, currentWorkbenchName, currentWorkbenchNameKnown, myReturnMSG
 		print("getting the URL")
 		print(self.path)
 
-		myReturnMSG = "Completed"
+		myReturnMSG = "***UNKNOWN***"
 		try:
 			commandToRun = str(unquote(self.path))
 			commandToRun = commandToRun[1:]
-			if (commandToRun == "list"):
-				myReturnMSG = actionList()
-			else:
-				
-				if (commandToRun != "favicon.ico"):
-					if (commandToRun[0:6] == "python"):
-						commandToRun = commandToRun[7:]
-						#errorDialog(commandToRun)
-						#print("the command sent :" + commandToRun)
-						myReturnMSG = str(eval(commandToRun))
-						commandToRun = ""
-					else:
-						freeCadCommandToRun = commandToRun
-						currentWorkbenchNameKnown = False
-						while currentWorkbenchNameKnown == False():
-							print("checking for workbench name change")
-						myReturnMSG = currentWorkbenchName
+			
+			if (commandToRun != "favicon.ico"):
+				if (commandToRun == "list"):
+					myReturnMSG = actionList()
+				if (commandToRun[0:6] == "python"):
+					freeCadCommandToRun = commandToRun
+					while myReturnMSG == "***UNKNOWN***":
+						print("checking for workbench name change")
 				else:
-					freeCadCommandToRun = ""
+					freeCadCommandToRun = commandToRun
+					currentWorkbenchNameKnown = False
+					while myReturnMSG == "***UNKNOWN***":
+						print("checking for workbench name change")
+					myReturnMSG = currentWorkbenchName
+
 
 		except:
 			print("failed command exicution")
@@ -204,6 +201,25 @@ _thread.start_new_thread(runTheServer,())
 
 
 
+import sys
+from io import StringIO
+import contextlib
+
+@contextlib.contextmanager
+def stdoutIO(stdout=None):
+    old = sys.stdout
+    if stdout is None:
+        stdout = StringIO()
+    sys.stdout = stdout
+    yield stdout
+    sys.stdout = old
+
+
+
+
+
+
+
 while 1:
 	FreeCADGui.updateGui()
 	if (currentWorkbenchName != Gui.activeWorkbench().name()):
@@ -216,14 +232,35 @@ while 1:
 	
 	#time.sleep(.001)
 	if (freeCadCommandToRun != ""):
-		hideAllToolbars()
-		blablablabla = freeCadCommandToRun
-		freeCadCommandToRun = ""
-		try:
-			dir(Gui.runCommand(blablablabla))
-		except:
-			errorDialog("Error, Some thing did not work : " +blablablabla)
-		hideAllToolbars()
+		if (freeCadCommandToRun[0:6] == "python"):
+			freeCadCommandToRun = freeCadCommandToRun[7:]
+			#errorDialog(commandToRun)
+			#print("the command sent :" + commandToRun)
+			##myReturnMSG = str(eval(freeCadCommandToRun))
+			with stdoutIO() as s:
+				try:
+					exec(freeCadCommandToRun)
+				except:
+					print("Something wrong with the code")
+			print("out:", s.getvalue())
+			myReturnMSG = str(s.getvalue())
+			freeCadCommandToRun = ""
+
+		else:
+			hideAllToolbars()
+			
+			
+			blablablabla = freeCadCommandToRun
+			freeCadCommandToRun = ""
+			
+			try:
+				dir(Gui.runCommand(blablablabla))
+				FreeCADGui.updateGui()
+			except:
+				errorDialog("Error, Some thing did not work : " +blablablabla)
+			myReturnMSG = ""
+			FreeCADGui.updateGui()
+			hideAllToolbars()
 	FreeCADGui.updateGui()
 	
 

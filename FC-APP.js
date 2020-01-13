@@ -13,17 +13,18 @@ currentAplicationMode = "app";
 async function runPythonConsole(shouldIRuntheCommand = true) {
   if (shouldIRuntheCommand == true) {
     $('#pythonCodeResponseAreaA').append(">>>" + $('#pythonCodeArea').val() + "\n");
-    $('#pythonCodeResponseAreaA').append(await $.get("./cmd/python " + await $('#pythonCodeArea').val()) + "\n");
+    htmlTempString = await $.get("./cmd/python " + await $('#pythonCodeArea').val()) + "\n";
+    $('#pythonCodeResponseAreaA').append(htmlTempString.replace("\n", "<br>"));
     $('#pythonCodeResponseAreaA').animate({ scrollTop: $('#pythonCodeResponseAreaA')[0].scrollHeight }, 200);
   }
 
 
-
-  $('#pythonCodeResponseAreaB').html(await $.get("./files/FC-log1.log"));
+  htmlTempString = await $.get("./files/FC-log1.log");
+  $('#pythonCodeResponseAreaB').append(htmlTempString.replace("\n", "<br>"));
   $('#pythonCodeResponseAreaB').animate({ scrollTop: $('#pythonCodeResponseAreaB')[0].scrollHeight }, 200);
 
-  $('#pythonCodeResponseAreaC').html(await $.get("./files/FC-log2.log"));
-  $('#pythonCodeResponseAreaC').animate({ scrollTop: $('#pythonCodeResponseAreaC')[0].scrollHeight }, 200);
+  // $('#pythonCodeResponseAreaC').html(await $.get("./files/FC-log2.log"));
+  // $('#pythonCodeResponseAreaC').animate({ scrollTop: $('#pythonCodeResponseAreaC')[0].scrollHeight }, 200);
 
 }
 
@@ -414,7 +415,7 @@ async function callAfterLoading() {
 
     $("#noVNC_control_bar_anchor").hide();
     $("#noVNC_container").css('border-bottom-right-radius', 0);
-    $("body").css('background-color', "#878f99");
+    $("body").css('background-color', "white");
 
 
 

@@ -28,10 +28,10 @@ RUN apt install \
 		nano \
 		--no-install-recommends -y 
 		
-# RUN apt remove freecad
-# RUN sudo add-apt-repository ppa:freecad-maintainers/freecad-daily
-# RUN sudo apt-get update
-# RUN sudo apt-get install freecad-daily
+# RUN apt remove freecad -y 
+# RUN add-apt-repository ppa:freecad-maintainers/freecad-daily -y 
+# RUN apt-get update 
+# RUN apt-get install freecad-daily -y 
 
 EXPOSE 80
 
