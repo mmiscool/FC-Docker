@@ -166,8 +166,10 @@ class Serv(BaseHTTPRequestHandler):
 			commandToRun = commandToRun[1:]
 			
 			if (commandToRun != "favicon.ico"):
-				if (commandToRun == "list"):
-					myReturnMSG = actionList()
+				if (commandToRun == "listCommands"):
+					myReturnMSG = str(Gui.listCommands())
+				if (commandToRun == "listWorkbenches"):
+					myReturnMSG = str(Gui.listWorkbenches())
 				if (commandToRun[0:6] == "python"):
 					freeCadCommandToRun = commandToRun
 					while myReturnMSG == "***UNKNOWN***":

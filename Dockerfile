@@ -61,6 +61,3 @@ ADD user.cfg /root/.FreeCAD/user.cfg
 RUN ln /root/.FreeCAD/user.cfg /root/user.cfg
 ADD index.html /novnc/index.html
 ADD FC-APP.js /novnc/FC-APP.js
-
-
-EXPOSE 7465 8085
