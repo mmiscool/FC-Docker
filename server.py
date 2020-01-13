@@ -168,11 +168,18 @@ class Serv(BaseHTTPRequestHandler):
 			else:
 				
 				if (commandToRun != "favicon.ico"):
-					freeCadCommandToRun = commandToRun
-					currentWorkbenchNameKnown = False
-					while currentWorkbenchNameKnown == False():
-						print("checking for workbench name change")
-					myReturnMSG = currentWorkbenchName
+					if (commandToRun[0:6] == "python"):
+						commandToRun = commandToRun[7:]
+						#errorDialog(commandToRun)
+						#print("the command sent :" + commandToRun)
+						myReturnMSG = str(eval(commandToRun))
+						commandToRun = ""
+					else:
+						freeCadCommandToRun = commandToRun
+						currentWorkbenchNameKnown = False
+						while currentWorkbenchNameKnown == False():
+							print("checking for workbench name change")
+						myReturnMSG = currentWorkbenchName
 				else:
 					freeCadCommandToRun = ""
 

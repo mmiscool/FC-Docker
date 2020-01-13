@@ -21,6 +21,18 @@ RUN apt update \
 		&& apt-get autoremove --yes \
 		&& rm -rf /var/lib/{apt,dpkg,cache,log}/
 
+
+RUN apt install \
+		firefox \
+		mousepad \
+		nano \
+		--no-install-recommends -y 
+		
+# RUN apt remove freecad
+# RUN sudo add-apt-repository ppa:freecad-maintainers/freecad-daily
+# RUN sudo apt-get update
+# RUN sudo apt-get install freecad-daily
+
 EXPOSE 80
 
 WORKDIR /root/
@@ -28,6 +40,8 @@ RUN mkdir /root/.FreeCAD
 
 
 ENV DISPLAY :0
+ADD FreeCAD_stylesheets /root/.FreeCAD/Gui/Stylesheets/
+
 ADD fileServer /fileServer
 ADD novnc /novnc
 ADD icons /novnc/icons
@@ -46,4 +60,7 @@ ADD settings.json settings.json
 ADD user.cfg /root/.FreeCAD/user.cfg
 RUN ln /root/.FreeCAD/user.cfg /root/user.cfg
 ADD index.html /novnc/index.html
+ADD FC-APP.js /novnc/FC-APP.js
+
+
 

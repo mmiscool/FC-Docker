@@ -1,1 +1,1 @@
-freecad /server.py --log-file /root/FC-log.txt
+freecad /server.py --log-file /root/FC-log1.log 
