@@ -283,7 +283,7 @@ async function buildToolGroupPalletDivs() {
 
     $('#toolGroup_' + currentGroup.name).html(currentGroup.name + "<br>");
 
-
+    iconRosCreated = 1;
     for (var i = 0; i < currentGroup.icons.length; i++) {
       currentIcon = currentGroup.icons[i];
       //console.log(currentIcon);
@@ -298,6 +298,7 @@ async function buildToolGroupPalletDivs() {
         alt: currentCommand.command,
         src: 'icons/' + currentCommand.iconFile + '.svg',
         onclick: "doCommand('" + currentCommand.command + "')",
+        style:"white-space:wrap;",
         title: currentCommand.toolTip,
         width: widthOfIcons + "px",
         height: widthOfIcons + "px",
@@ -305,6 +306,11 @@ async function buildToolGroupPalletDivs() {
       };
 
 
+      if (widthOfIcons * i == widthOfDivCalculated * iconRosCreated ) {
+        $('#toolGroup_' + currentGroup.name).append("<br>");
+        iconRosCreated++;
+      }
+      
 
       $('#toolGroup_' + currentGroup.name).append($('<img>', commandButtonSettings));
       //---------------------------------
@@ -472,7 +478,9 @@ async function doCommand(commandToDo) {
 
 
     commandToDo = commandToDo.replace("@", "");
-    await $.get('/cmd/' + commandToDo);
+    bla = await $.get('/cmd/' + commandToDo);
+    //alert(bla);
+    if (bla.toUpperCase().indexOf("ERROR") > -1) alert(bla);
   }
 }
 

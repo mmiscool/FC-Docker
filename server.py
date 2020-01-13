@@ -176,8 +176,10 @@ class Serv(BaseHTTPRequestHandler):
 					freeCadCommandToRun = commandToRun
 					currentWorkbenchNameKnown = False
 					while myReturnMSG == "***UNKNOWN***":
+						print("waiting for return msg")
+					while currentWorkbenchNameKnown == False:
 						print("checking for workbench name change")
-					myReturnMSG = currentWorkbenchName
+					myReturnMSG += "***" + currentWorkbenchName + "***"
 
 
 		except:
@@ -256,9 +258,11 @@ while 1:
 			try:
 				dir(Gui.runCommand(blablablabla))
 				FreeCADGui.updateGui()
+				myReturnMSG = ""
 			except:
-				errorDialog("Error, Some thing did not work : " +blablablabla)
-			myReturnMSG = ""
+				myReturnMSG = "####ERROR, Some thing did not work : " + blablablabla
+				print(myReturnMSG )
+			
 			FreeCADGui.updateGui()
 			hideAllToolbars()
 	FreeCADGui.updateGui()

@@ -5,6 +5,9 @@
     "language": {
         "tern_defs": {
             "json()": {
+                "JSONStream": {
+                    "enabled": false
+                },
                 "browser": {
                     "enabled": true
                 },

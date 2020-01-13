@@ -28,7 +28,7 @@
 }
 
 ::-webkit-scrollbar-thumb {
-  border-radius: 5px;
+  border-radius: 25px;
   background-color: rgba(0,0,0,.5);
   -webkit-box-shadow: 0 0 1px rgba(255,255,255,.5);
 }
@@ -46,7 +46,7 @@
 
 
 <div style="width:calc(100% - 0px); height:calc(100% - 0px);" onclick="$('#toolBarRightClickMenue').hide();">
-  <div style="width:calc(100% - 0px); height: 155px; ">
+  <div style="width:calc(100% - 0px); height: 175px; ">
 
     <select id="commands" onchange="doCommand(this.value);">
     	<h1>Loading Tool Bars. Please wait</h1>
@@ -54,17 +54,17 @@
 
 
 
-    <div id="commandIcons" style="width:calc(100% - 0px); height: 155px; overflow-y: scroll; border-style: dotted;" oncontextmenu="
+    <div id="commandIcons" style="width:calc(100% - 0px); height: 155px; overflow:scroll; border-style: dotted;white-space: nowrap;" oncontextmenu="
     groupListIconRightClick(null ,null , event);
     return false;
     
     "></div>
   </div>
 
-  <div id="application" style="height:calc(100% - 165px); width:calc(100% - 2px); padding:0px;">
+  <div id="application" style="height:calc(100% - 185px); width:calc(100% - 2px); padding:0px;">
 
   </div>
-  <div id="settings" style="height:calc(100% - 195px); width:calc( 100% - 0px); overflow: scroll;">
+  <div id="settings" style="height:calc(100% - 165px); width:calc( 100% - 0px); overflow: scroll;">
     <button onclick='currentAplicationMode = "app"; $("#settings").hide(); $("#application").show();'>Close Icon Editor</button>
     <br>
 

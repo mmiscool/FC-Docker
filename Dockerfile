@@ -63,4 +63,4 @@ ADD index.html /novnc/index.html
 ADD FC-APP.js /novnc/FC-APP.js
 
 
-
+EXPOSE 7465 8085
