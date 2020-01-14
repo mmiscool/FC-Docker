@@ -9,7 +9,10 @@ You must have docker installed. On Ubuntu use the following command
 In the repository directory run the following script.
 ```./build-run.sh```
 
-After that script is run you should be able to visit http://localhost too see the application. 
+After that script is run you should be able to visit http://localhost/ too see the application. 
+Running this script will also start up a Cloud9 IDE environment accessible at http://localhost:8181/ use "username" and "password" to log in to it. 
+I use Cloud9 for my IDE as all development done on this project so far was done on a Chromebook!
+Feel free to use it if you wish. If not don't worry about it. 
 
 
 # external_dependencies
