@@ -1,18 +1,17 @@
-[submodule "Droopy"]
+[submodule "external_dependencies/external/websockify"]
+	path = external_dependencies/external/websockify
+	url = https://github.com/novnc/websockify.git
+
+	
+[submodule "external_dependencies/external/noVNC"]
+	path = external_dependencies/external/noVNC
+	url = https://github.com/novnc/noVNC.git
+
+	
+[submodule "external_dependencies/external/FreeCAD"]
+	path = external_dependencies/external/FreeCAD
+	url = https://github.com/FreeCAD/FreeCAD.git
+	
+[submodule "external_dependencies/external/Droopy"]
 	path = external_dependencies/external/Droopy
 	url = https://github.com/mmiscool/Droopy.git
-	
-	
-[submodule "websockify"]
-	path = external_dependencies/external/websockify
-	url = clone https://github.com/novnc/websockify
-
-	
-[submodule "noVNC"]
-	path = external_dependencies/external/noVNC
-	url = https://github.com/novnc/noVNC
-
-	
-[submodule "FreeCADy"]
-	path = external_dependencies/external/FreeCAD
-	url = https://github.com/FreeCAD/FreeCAD
