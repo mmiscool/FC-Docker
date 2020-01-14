@@ -1,5 +1,6 @@
 mkdir external_dependencies
 cd external_dependencies
+mkdir external
 for each in ./*.sh ; do bash $each ; done
 cd ..
 ls
