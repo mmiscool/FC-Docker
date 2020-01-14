@@ -28,6 +28,11 @@ RUN apt install \
 		thunar \
 		nano \
 		--no-install-recommends -y 
+RUN apt install git python-numpy python-pyside -y
+RUN mkdir /root/.FreeCAD/ &&\
+    mkdir /root/.FreeCAD/Mod  && \
+    cd ~/.FreeCAD/Mod && \
+    git clone https://github.com/kbwbe/A2plus.git
 
 
 ADD system.jwmrc /etc/jwm/system.jwmrc
@@ -40,7 +45,6 @@ ADD system.jwmrc /etc/jwm/system.jwmrc
 EXPOSE 80
 
 WORKDIR /root/
-RUN mkdir /root/.FreeCAD
 
 ENV DISPLAY :0
 
