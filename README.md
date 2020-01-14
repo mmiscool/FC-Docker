@@ -2,6 +2,21 @@
 
 Included in this package is a docker file that builds a FreeCAD environment that is accessible from the web browser. Rendering is done on the server side for everything.
 
+# Building and running
+To build and run this project clone this repository.
+You must have docker installed. On Ubuntu use the following command
+```sudo apt install docker-ce```
+In the repository directory run the following script.
+```./build-run.sh```
+
+After that script is run you should be able to visit http://localhost too see the application. 
+
+
+# external_dependencies
+Right now there is an external_dependencies folder. Items in this folder are from other projects.
+A build system that fetches these files from there source projects will be implemented.
+Respect the licences included with the packages in the external_dependencies folder. 
+
 # Contributing to this project. 
 This project is release under AGPL-3.0 licence. If you wish to use the code any thing you do with it including server side management systems must be made open source under the same licence. This applies to any any one who is hosting cloud services to the general public. Any modifications made must be shared. 
 https://www.gnu.org/licenses/agpl-3.0.en.html

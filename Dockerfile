@@ -42,13 +42,11 @@ EXPOSE 80
 WORKDIR /root/
 RUN mkdir /root/.FreeCAD
 
-
 ENV DISPLAY :0
-ADD FreeCAD_stylesheets /root/.FreeCAD/Gui/Stylesheets/
 
-ADD fileServer /fileServer
-ADD novnc /novnc
-ADD icons /novnc/icons
+ADD external_dependencies/fileServer /fileServer
+ADD external_dependencies/novnc /novnc
+ADD external_dependencies/icons /novnc/icons
 ADD supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 ADD start.sh /start.sh
 
