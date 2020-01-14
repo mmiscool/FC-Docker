@@ -10,12 +10,12 @@ RUN apt update \
 		xvfb \
 		x11vnc \
 		xdotool \
-		fluxbox \
 		software-properties-common \
 		supervisor \
 		nginx x11-xserver-utils \
 		xterm \
 		freecad \
+		jwm \
 		--no-install-recommends -y \
 		&& apt-get clean autoclean \
 		&& apt-get autoremove --yes \
@@ -25,9 +25,13 @@ RUN apt update \
 RUN apt install \
 		firefox \
 		mousepad \
+		thunar \
 		nano \
 		--no-install-recommends -y 
-		
+
+
+ADD system.jwmrc /etc/jwm/system.jwmrc
+
 # RUN apt remove freecad -y 
 # RUN add-apt-repository ppa:freecad-maintainers/freecad-daily -y 
 # RUN apt-get update 
