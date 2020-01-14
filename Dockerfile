@@ -48,9 +48,10 @@ WORKDIR /root/
 
 ENV DISPLAY :0
 
-ADD external_dependencies/fileServer /fileServer
-ADD external_dependencies/novnc /novnc
-ADD external_dependencies/icons /novnc/icons
+ADD external_dependencies/external/Droopy /fileServer
+ADD external_dependencies/external/noVNC /novnc
+ADD external_dependencies/external/icons /novnc/icons
+
 ADD supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 ADD start.sh /start.sh
 

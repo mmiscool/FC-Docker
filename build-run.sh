@@ -1,9 +1,18 @@
-#git clone https://github.com/FreeCAD/FreeCAD.git
-#mkdir icons
-#cd FreeCAD
-#find . -name "*.svg" -type f -exec cp {} ../icons \;
+mkdir external_dependencies
+cd external_dependencies
+for each in ./*.sh ; do bash $each ; done
+cd ..
+ls
+
+
+
+
 
 #sudo docker kill $(sudo docker ps -q)
+
+
+
+
 sudo docker ps -q --filter ancestor="kewl" | xargs -r sudo docker stop
 
 sudo docker run -d -v $(pwd):/workspace -p 8181:8181 sapk/cloud9 --auth username:password
