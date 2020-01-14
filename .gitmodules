@@ -1,0 +1,18 @@
+[submodule "Droopy"]
+	path = external_dependencies/external/Droopy
+	url = https://github.com/mmiscool/Droopy.git
+	
+	
+[submodule "websockify"]
+	path = external_dependencies/external/websockify
+	url = clone https://github.com/novnc/websockify
+
+	
+[submodule "noVNC"]
+	path = external_dependencies/external/noVNC
+	url = https://github.com/novnc/noVNC
+
+	
+[submodule "FreeCADy"]
+	path = external_dependencies/external/FreeCAD
+	url = https://github.com/FreeCAD/FreeCAD
