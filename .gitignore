@@ -1,2 +1,4 @@
 # file types to ignore
 
+external_dependencies/external/icons/
+external_dependencies/external/icons

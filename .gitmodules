@@ -15,3 +15,7 @@
 [submodule "external_dependencies/external/Droopy"]
 	path = external_dependencies/external/Droopy
 	url = https://github.com/mmiscool/Droopy.git
+	
+[submodule "external_dependencies/external/Mod/a2plus"]
+	path = external_dependencies/external/Mod/a2plus
+	url = https://github.com/kbwbe/A2plus.git

@@ -29,11 +29,8 @@ RUN apt install \
 		nano \
 		--no-install-recommends -y 
 RUN apt install git python-numpy python-pyside -y
-RUN mkdir /root/.FreeCAD/ &&\
-    mkdir /root/.FreeCAD/Mod  && \
-    cd ~/.FreeCAD/Mod && \
-    git clone https://github.com/kbwbe/A2plus.git
 
+ADD external_dependencies/external/Mod /root/.FreeCAD/Mod 
 
 ADD system.jwmrc /etc/jwm/system.jwmrc
 
