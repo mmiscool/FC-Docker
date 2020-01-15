@@ -1,24 +1,5 @@
-git submodule update --init
-
-
-
-cd external_dependencies
-mkdir external
-for each in ./*.sh ; do bash $each ; done
-
-cd ..
-ls
-
-
-
-
-
-
-
 #sudo docker kill $(sudo docker ps -q)
-
-
-
+#./hooks/post_checkout
 
 sudo docker ps -q --filter ancestor="kewl" | xargs -r sudo docker stop
 

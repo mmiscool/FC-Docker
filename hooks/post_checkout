@@ -1,2 +1,7 @@
 #!/bin/bash
 git submodule update --init
+
+cd external_dependencies
+for each in ./*.sh ; do bash $each ; done
+cd ..
+ls

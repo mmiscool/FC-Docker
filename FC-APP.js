@@ -85,7 +85,6 @@ async function createNewToolGroup() {
 
 
 
-
 async function groupListIconRightClick(x, y, e) {
   event.preventDefault();
   event.stopPropagation();
@@ -150,6 +149,48 @@ async function groupListIconRightClick(x, y, e) {
     $('#toolBarRightClickMenue').append($('<button>', newButtonStuff));
 
     $('#toolBarRightClickMenue').append("<br>");
+    
+    
+    
+    newButtonStuff = {
+      onclick: `
+
+                workbenctToEditToolBarsFor = undefined;
+                //alert(activeWorkbench + "     " + "` + x + `");
+                while (workbenctToEditToolBarsFor == undefined){
+                  for (i = 0; i < toolbarGlobalObject.workbenches.length; i++) {
+                    if (activeWorkbench == toolbarGlobalObject.workbenches[i].name) workbenctToEditToolBarsFor = i;
+                  }
+                  if (workbenctToEditToolBarsFor == undefined){
+                    toolbarGlobalObject.workbenches.push({
+                      name: activeWorkbench,
+                      toolGroups: [],
+                    });
+                  }
+                }
+                
+                if (toolbarGlobalObject.workbenches[workbenctToEditToolBarsFor].toolGroups.includes(toolbarGlobalObject.toolGroups[` + x + `].name)){
+   
+                  toolbarGlobalObject.workbenches[workbenctToEditToolBarsFor].toolGroups =
+                  toolbarGlobalObject.workbenches[workbenctToEditToolBarsFor].toolGroups.filter(e => e !== toolbarGlobalObject.toolGroups[` + x + `].name);
+                  
+                  
+                }else{
+                  toolbarGlobalObject.workbenches[workbenctToEditToolBarsFor].toolGroups.push(toolbarGlobalObject.toolGroups[` + x + `].name);
+                }
+                
+                
+                
+                buildToolGroupPalletDivs();
+                
+  							`,
+      text: "Toggle exclude From Workbench",
+    };
+    $('#toolBarRightClickMenue').append($('<button>', newButtonStuff));
+  
+    $('#toolBarRightClickMenue').append("<br>");
+    
+    
   }
 
 
@@ -226,6 +267,7 @@ async function groupListIconRightClick(x, y, e) {
 
 
 
+
   $("#toolBarRightClickMenue").show();
   $("#toolBarRightClickMenue").css("left", e.pageX);
   $("#toolBarRightClickMenue").css("top", e.pageY);
@@ -252,6 +294,16 @@ async function buildToolGroupPalletDivs() {
 
   if (toolbarGlobalObject.widthOfIcons < 10) toolbarGlobalObject.widthOfIcons = 40;
   widthOfIcons = toolbarGlobalObject.widthOfIcons;
+  
+  
+  toolGroupsAlowedInWorkbench = await toolbarGlobalObject.workbenches.find(obj => { return obj.name === activeWorkbench });
+  
+  if (toolGroupsAlowedInWorkbench == undefined) {
+    toolGroupsAlowedInWorkbench = {};
+    toolGroupsAlowedInWorkbench.toolGroups = [];
+  }
+  //alert(JSON.stringify(toolGroupsAlowedInWorkbench));
+  
 
 
   for (var x = 0; x < toolbarGlobalObject.toolGroups.length; x++) {
@@ -260,6 +312,7 @@ async function buildToolGroupPalletDivs() {
     currentGroup.name = currentGroup.name.replace(" ", "_");
 
     //need to create the div and calcualte width of div
+    
 
 
     widthOfDivCalculated = widthOfIcons;
@@ -270,7 +323,6 @@ async function buildToolGroupPalletDivs() {
 
     tooGroupDiv = {
       id: "toolGroup_" + currentGroup.name,
-      alt: currentCommand.command,
       style: "border-style: dotted;overflow:hidden; white-space:wrap; display: inline-block; height:145px;width:" + widthOfDivCalculated + "px;",
       ondrop: "event.preventDefault();catchDropIconToGroup(" + x + ");",
       ondragover: "event.preventDefault();",
@@ -280,6 +332,13 @@ async function buildToolGroupPalletDivs() {
 
 
     $('#commandIcons').append($('<div>', tooGroupDiv));
+    
+    if (currentAplicationMode !== "iconEditor"){
+          if (toolGroupsAlowedInWorkbench.toolGroups.includes(currentGroup.name)) $('#toolGroup_' + currentGroup.name).hide();
+    }
+
+    if (toolGroupsAlowedInWorkbench.toolGroups.includes(currentGroup.name)) $('#toolGroup_' + currentGroup.name).css({'background-color':'pink'});
+    
 
     $('#toolGroup_' + currentGroup.name).html(currentGroup.name + "<br>");
 
@@ -415,7 +474,7 @@ async function callAfterLoading() {
 
   //await $("#application").load('./vnc.html');
 
-
+  loadWorkbenches();
 
   await $("#application").load('./vnc.html', function(responseTxt, statusTxt, xhr) {
 
@@ -450,7 +509,10 @@ async function callAfterLoading() {
   showCommads();
   buildToolGroupPalletDivs();
 
-
+window.setInterval(function(){
+  getCurrentWorkbench();
+  $("#noVNC_fallback_error").hide();
+}, 1000);
 
 
 }
@@ -482,7 +544,72 @@ async function doCommand(commandToDo) {
     //alert(bla);
     if (bla.toUpperCase().indexOf("ERROR") > -1) alert(bla);
   }
+  
+  getCurrentWorkbench();
 }
+
+
+
+
+async function loadWorkbenches(){
+  bla = "ERROR"
+  while (bla.indexOf("ERROR") > -1){
+    bla = await $.get('./cmd/listWorkbenches');
+  }
+  
+  
+  
+  
+  $('#currentWorkbench').empty();  
+    
+  blabla = bla.split("'");
+  for (i = 0; i < blabla.length; i++) {
+  	if(blabla[i].indexOf("{") == -1 & blabla[i].indexOf(">") == -1 ){
+  	  blabla[i] = blabla[i].trim();
+      $('#currentWorkbench').append('<option value="' + blabla[i].trim() + '">' + blabla[i].trim() + '</option>');
+    }
+  
+  }
+  
+  activeWorkbench  = await $.get('./cmd/activeWorkbench');
+  activeWorkbench = activeWorkbench.replace("***", "");
+  activeWorkbench = activeWorkbench.replace("***", "");
+  activeWorkbench = activeWorkbench.split(">")[1];
+  
+  //alert(JSON.stringify(activeWorkbench ));
+  
+  $("#currentWorkbench").val(activeWorkbench)
+}
+
+
+
+async function getCurrentWorkbench(){
+  ActuallyCurrentActiveWorkbench = activeWorkbench
+  activeWorkbenchTemp  = await $.get('./cmd/activeWorkbench');
+
+  if (activeWorkbenchTemp !== undefined){
+    activeWorkbench = activeWorkbenchTemp;
+    
+  }
+  
+  if(ActuallyCurrentActiveWorkbench != activeWorkbench){
+    $("#currentWorkbench").val(activeWorkbench);
+    buildToolGroupPalletDivs();
+  }
+  
+  
+}
+
+
+activeWorkbench = "";
+
+async function setActiveWorkbench(workbenchToActivate){ 
+  
+  bla = await $.get('./cmd/python Gui.activateWorkbench("' + workbenchToActivate + '")');
+  activeWorkbench = workbenchToActivate;
+  buildToolGroupPalletDivs();
+}
+
 
 
 

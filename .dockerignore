@@ -1,1 +1,14 @@
-/external_dependencies/external/FreeCAD
+external_dependencies/external/FreeCAD/
+external_dependencies/external/FreeCAD
+external_dependencies/external/FreeCAD/*
+external_dependencies/external/FreeCAD/*
+external_dependencies/external/FreeCAD/*/*
+external_dependencies/external/FreeCAD/*/*/*
+external_dependencies/external/FreeCAD/*/*/*/*
+external_dependencies/external/FreeCAD/*/*/*/*/*
+external_dependencies/external/FreeCAD/*/*/*/*/*/*
+external_dependencies/external/FreeCAD/*/*/*/*/*/*/*
+external_dependencies/external/FreeCAD/*/*/*/*/*/*/*/*
+
+./external_dependencies/external/FreeCAD
+./external_dependencies/external/FreeCAD/

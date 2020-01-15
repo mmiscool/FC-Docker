@@ -157,9 +157,9 @@ class Serv(BaseHTTPRequestHandler):
 	def do_GET(self):
 		#global Gui
 		global freeCadCommandToRun, currentWorkbenchName, currentWorkbenchNameKnown, myReturnMSG
-		print("getting the URL")
-		print(self.path)
-
+		#print("getting the URL")
+		#print(self.path)
+		freeCadCommandToRun = ""
 		myReturnMSG = "***UNKNOWN***"
 		try:
 			commandToRun = str(unquote(self.path))
@@ -168,21 +168,20 @@ class Serv(BaseHTTPRequestHandler):
 			if (commandToRun != "favicon.ico"):
 				if (commandToRun == "listCommands"):
 					myReturnMSG = str(Gui.listCommands())
-				if (commandToRun == "listWorkbenches"):
+				elif (commandToRun == "listWorkbenches"):
 					myReturnMSG = str(Gui.listWorkbenches())
-				if (commandToRun[0:6] == "python"):
+				elif (commandToRun == "activeWorkbench"):
+					myReturnMSG = currentWorkbenchName
+				elif (commandToRun[0:6] == "python"):
 					freeCadCommandToRun = commandToRun
-					while myReturnMSG == "***UNKNOWN***":
-						print("checking for workbench name change")
 				else:
 					freeCadCommandToRun = commandToRun
 					currentWorkbenchNameKnown = False
 					while myReturnMSG == "***UNKNOWN***":
-						print("waiting for return msg")
+						time.sleep(.1)
 					while currentWorkbenchNameKnown == False:
-						print("checking for workbench name change")
-					myReturnMSG += "***" + currentWorkbenchName + "***"
-
+						time.sleep(.1)
+					myReturnMSG += "" + currentWorkbenchName + ""
 
 		except:
 			print("failed command exicution")
@@ -225,6 +224,7 @@ def stdoutIO(stdout=None):
 
 
 while 1:
+	
 	FreeCADGui.updateGui()
 	if (currentWorkbenchName != Gui.activeWorkbench().name()):
 		currentWorkbenchNameKnown = False
@@ -232,6 +232,7 @@ while 1:
 		currentWorkbenchName = Gui.activeWorkbench().name()
 		currentWorkbenchNameKnown = True
 		hideAllToolbars()
+		myReturnMSG = ""
 	
 	
 	#time.sleep(.001)
@@ -261,6 +262,7 @@ while 1:
 				dir(Gui.runCommand(blablablabla))
 				FreeCADGui.updateGui()
 				myReturnMSG = ""
+				
 			except:
 				myReturnMSG = "####ERROR, Some thing did not work : " + blablablabla
 				print(myReturnMSG )

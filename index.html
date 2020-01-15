@@ -48,24 +48,23 @@
 <div style="width:calc(100% - 0px); height:calc(100% - 0px);" onclick="$('#toolBarRightClickMenue').hide();">
   <div style="width:calc(100% - 0px); height: 175px; ">
 
-    <select id="commands" onchange="doCommand(this.value);">
-    	<h1>Loading Tool Bars. Please wait</h1>
-    </select>
-
+    <select id="commands" onchange="doCommand(this.value);"></select>
+    Workbench:<select id="currentWorkbench" onchange="setActiveWorkbench(this.value);"></select>
+    
 
 
     <div id="commandIcons" style="width:calc(100% - 100px); height: 155px; overflow:scroll; border-style: dotted;white-space: nowrap;" oncontextmenu="
     groupListIconRightClick(null ,null , event);
     return false;
     
-    "></div>
+    "><h1>Loading Tool Bars. Please wait</h1></div>
   </div>
 
   <div id="application" style="height:calc(100% - 185px); width:calc(100% - 2px); padding:0px;">
 
   </div>
   <div id="settings" style="height:calc(100% - 165px); width:calc( 100% - 0px); overflow: scroll;">
-    <button onclick='currentAplicationMode = "app"; $("#settings").hide(); $("#application").show();'>Close Icon Editor</button>
+    <button onclick='currentAplicationMode = "app"; $("#settings").hide(); $("#application").show();buildToolGroupPalletDivs();'>Close Icon Editor</button>
     <br>
 
     <div id="commandsEditorList" style="height:calc(100% - 50px); width:300px; overflow-y: scroll;  display: inline-block;"></div>
