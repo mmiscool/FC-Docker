@@ -1,5 +1,5 @@
 #sudo docker kill $(sudo docker ps -q)
-#./hooks/post_checkout
+./hooks/post_checkout
 
 sudo docker ps -q --filter ancestor="kewl" | xargs -r sudo docker stop
 
