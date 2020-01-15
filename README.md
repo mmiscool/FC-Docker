@@ -1,4 +1,4 @@
-![Docker Automated build](https://img.shields.io/docker/automated/mmiscool/fc-docker?style=flat-square)
+![Docker Cloud Build Status](https://img.shields.io/docker/cloud/build/mmiscool/fc-docker)
 
 # FC-Docker Run FreeCAD in a docker and make it accessible via the web browser
 
