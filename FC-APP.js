@@ -69,10 +69,14 @@ async function createNewToolGroup() {
   //alert($("#newToolGroupName").val());
   newToolGroupName = prompt("Tool Group Name");
 
-  toolbarGlobalObject.toolGroups.push({
-    name: newToolGroupName,
-    icons: [],
-  });
+  if (newToolGroupName) {
+    toolbarGlobalObject.toolGroups.push({
+      name: newToolGroupName,
+      icons: [],
+    });
+  }
+
+
 
 }
 
@@ -149,9 +153,9 @@ async function groupListIconRightClick(x, y, e) {
     $('#toolBarRightClickMenue').append($('<button>', newButtonStuff));
 
     $('#toolBarRightClickMenue').append("<br>");
-    
-    
-    
+
+
+
     newButtonStuff = {
       onclick: `
 
@@ -187,16 +191,19 @@ async function groupListIconRightClick(x, y, e) {
       text: "Toggle exclude From Workbench",
     };
     $('#toolBarRightClickMenue').append($('<button>', newButtonStuff));
-  
+
     $('#toolBarRightClickMenue').append("<br>");
-    
-    
+
+
   }
 
 
 
   newButtonStuff = {
-    onclick: "createNewToolGroup();buildToolGroupPalletDivs();",
+    onclick: `  
+              createNewToolGroup();
+              buildToolGroupPalletDivs();
+              `,
     text: "Create Tool Group",
   };
   $('#toolBarRightClickMenue').append($('<button>', newButtonStuff));
@@ -207,7 +214,8 @@ async function groupListIconRightClick(x, y, e) {
 
   newButtonStuff = {
     onclick: `
-    						toolbarGlobalObject.toolGroups[` + x + `].name = prompt("New Group Name", toolbarGlobalObject.toolGroups[` + x + `].name);
+                newNameForToolGroup = prompt("New Group Name", toolbarGlobalObject.toolGroups[` + x + `].name);
+                if(newNameForToolGroup) toolbarGlobalObject.toolGroups[` + x + `].name = newNameForToolGroup;
     						buildToolGroupPalletDivs();
     						`,
     text: "Rename Tool Group",
@@ -219,7 +227,13 @@ async function groupListIconRightClick(x, y, e) {
 
 
   newButtonStuff = {
-    onclick: `currentAplicationMode = "iconEditor";  loadIconPalletForSettings(); $("#settings").show(); $("#application").hide();buildToolGroupPalletDivs();`,
+    onclick: `
+                currentAplicationMode = "iconEditor";  
+                loadIconPalletForSettings(); 
+                $("#settings").show(); 
+                $("#application").hide();
+                buildToolGroupPalletDivs();
+                `,
     text: "Edit Icons",
   };
   $('#toolBarRightClickMenue').append($('<button>', newButtonStuff));
@@ -294,16 +308,16 @@ async function buildToolGroupPalletDivs() {
 
   if (toolbarGlobalObject.widthOfIcons < 10) toolbarGlobalObject.widthOfIcons = 40;
   widthOfIcons = toolbarGlobalObject.widthOfIcons;
-  
-  
+
+
   toolGroupsAlowedInWorkbench = await toolbarGlobalObject.workbenches.find(obj => { return obj.name === activeWorkbench });
-  
+
   if (toolGroupsAlowedInWorkbench == undefined) {
     toolGroupsAlowedInWorkbench = {};
     toolGroupsAlowedInWorkbench.toolGroups = [];
   }
   //alert(JSON.stringify(toolGroupsAlowedInWorkbench));
-  
+
 
 
   for (var x = 0; x < toolbarGlobalObject.toolGroups.length; x++) {
@@ -312,7 +326,7 @@ async function buildToolGroupPalletDivs() {
     currentGroup.name = currentGroup.name.replace(" ", "_");
 
     //need to create the div and calcualte width of div
-    
+
 
 
     widthOfDivCalculated = widthOfIcons;
@@ -332,13 +346,13 @@ async function buildToolGroupPalletDivs() {
 
 
     $('#commandIcons').append($('<div>', tooGroupDiv));
-    
-    if (currentAplicationMode !== "iconEditor"){
-          if (toolGroupsAlowedInWorkbench.toolGroups.includes(currentGroup.name)) $('#toolGroup_' + currentGroup.name).hide();
+
+    if (currentAplicationMode !== "iconEditor") {
+      if (toolGroupsAlowedInWorkbench.toolGroups.includes(currentGroup.name)) $('#toolGroup_' + currentGroup.name).hide();
     }
 
-    if (toolGroupsAlowedInWorkbench.toolGroups.includes(currentGroup.name)) $('#toolGroup_' + currentGroup.name).css({'background-color':'pink'});
-    
+    if (toolGroupsAlowedInWorkbench.toolGroups.includes(currentGroup.name)) $('#toolGroup_' + currentGroup.name).css({ 'background-color': 'pink' });
+
 
     $('#toolGroup_' + currentGroup.name).html(currentGroup.name + "<br>");
 
@@ -353,11 +367,11 @@ async function buildToolGroupPalletDivs() {
 
 
       commandButtonSettings = {
-        id: '',
+        id: 'commandIcon_' + currentCommand.command,
         alt: currentCommand.command,
-        src: 'icons/' + currentCommand.iconFile + '.svg',
+        src: 'icons/' + currentCommand.iconFile.toLowerCase().replace(/-/g, '_') + '.svg',
         onclick: "doCommand('" + currentCommand.command + "')",
-        style:"white-space:wrap;",
+        style: "white-space:wrap;",
         title: currentCommand.toolTip,
         width: widthOfIcons + "px",
         height: widthOfIcons + "px",
@@ -365,11 +379,11 @@ async function buildToolGroupPalletDivs() {
       };
 
 
-      if (widthOfIcons * i == widthOfDivCalculated * iconRosCreated ) {
+      if (widthOfIcons * i == widthOfDivCalculated * iconRosCreated) {
         $('#toolGroup_' + currentGroup.name).append("<br>");
         iconRosCreated++;
       }
-      
+
 
       $('#toolGroup_' + currentGroup.name).append($('<img>', commandButtonSettings));
       //---------------------------------
@@ -449,8 +463,8 @@ async function loadIconPalletForSettings() {
       $('#iconPalletForSettings').append($('<img>', {
         id: '',
         alt: currentIcon,
-        src: 'icons/' + currentIcon,
-        onclick: "$('#commandEditor_iconFile').val('" + currentIcon.replace(".svg", "") + "')",
+        src: 'icons/' + currentIcon.toLowerCase().replace(/-/g, '_'),
+        onclick: "$('#commandEditor_iconFile').val('" + currentIcon.replace(".svg", "") + "'); saveCommandIcon() ;",
         title: currentIcon,
         width: "40px",
         height: "40px",
@@ -469,12 +483,7 @@ async function loadIconPalletForSettings() {
 
 
 async function callAfterLoading() {
-  //alert("doing the set up");
 
-
-  //await $("#application").load('./vnc.html');
-
-  loadWorkbenches();
 
   await $("#application").load('./vnc.html', function(responseTxt, statusTxt, xhr) {
 
@@ -500,6 +509,7 @@ async function callAfterLoading() {
     toolbarGlobalObject = await JSON.parse(await localStorage.getItem('FC ICON SETTINGS'));
   }
   else {
+    alert("No user settings present. Loading from settings file on server");
     console.log("No user settings present. Loading from settings file on server");
     toolbarGlobalObject = await $.get('/files/settings.json');
   }
@@ -507,12 +517,18 @@ async function callAfterLoading() {
   //loadIconPalletForSettings();
 
   showCommads();
+  activeWorkbench = "";
+  loadWorkbenches();
+  getCurrentWorkbench();
   buildToolGroupPalletDivs();
 
-window.setInterval(function(){
-  getCurrentWorkbench();
-  $("#noVNC_fallback_error").hide();
-}, 1000);
+  window.setInterval(function() {
+    document.title = "FreeCAD Cloud by mmiscool";
+
+    getCurrentWorkbench();
+    $("#noVNC_fallback_error").hide();
+
+  }, 1000);
 
 
 }
@@ -544,67 +560,113 @@ async function doCommand(commandToDo) {
     //alert(bla);
     if (bla.toUpperCase().indexOf("ERROR") > -1) alert(bla);
   }
-  
+
   getCurrentWorkbench();
 }
 
 
 
 
-async function loadWorkbenches(){
+async function loadWorkbenches() {
   bla = "ERROR"
-  while (bla.indexOf("ERROR") > -1){
+  while (bla.indexOf("ERROR") > -1) {
     bla = await $.get('./cmd/listWorkbenches');
   }
-  
-  
-  
-  
-  $('#currentWorkbench').empty();  
-    
+
+
+
+  excludeWorkbenches = [
+    "NoneWorkbench",
+    "ArchWorkbench",
+    "CompleteWorkbench",
+    "DrawingWorkbench",
+    "ImageWorkbench",
+    "InspectionWorkbench",
+    "OpenSCADWorkbench",
+    "PathWorkbench",
+    "PlotWorkbench",
+    "PointsWorkbench",
+    "RaytracingWorkbench",
+    "ReverseEngineeringWorkbench",
+    "RobotWorkbench",
+    "ShipWorkbench",
+    "SurfaceWorkbench",
+    "TechDrawWorkbench",
+    "TestWorkbench",
+    "WebWorkbench",
+    "StartWorkbench",
+  ];
+
+
+
+
+
+  $('#currentWorkbench').empty();
+  avaiableWorkbenches = [];
+
   blabla = bla.split("'");
+  blabla.sort();
   for (i = 0; i < blabla.length; i++) {
-  	if(blabla[i].indexOf("{") == -1 & blabla[i].indexOf(">") == -1 ){
-  	  blabla[i] = blabla[i].trim();
-      $('#currentWorkbench').append('<option value="' + blabla[i].trim() + '">' + blabla[i].trim() + '</option>');
+    if (blabla[i].indexOf("{") == -1 & blabla[i].indexOf(">") == -1) {
+      blabla[i] = blabla[i].trim();
+      avaiableWorkbenches.push(blabla[i]);
+      if (!excludeWorkbenches.includes(blabla[i])) {
+        $('#currentWorkbench').append('<option value="' + blabla[i] + '">' + blabla[i] + '</option>');
+      }
+
     }
-  
+
   }
-  
-  activeWorkbench  = await $.get('./cmd/activeWorkbench');
-  activeWorkbench = activeWorkbench.replace("***", "");
-  activeWorkbench = activeWorkbench.replace("***", "");
-  activeWorkbench = activeWorkbench.split(">")[1];
-  
-  //alert(JSON.stringify(activeWorkbench ));
-  
+
+  console.log(JSON.stringify(avaiableWorkbenches));
+
+  activeWorkbench = await $.get('./cmd/activeWorkbench');
+
   $("#currentWorkbench").val(activeWorkbench)
 }
 
 
 
-async function getCurrentWorkbench(){
-  ActuallyCurrentActiveWorkbench = activeWorkbench
-  activeWorkbenchTemp  = await $.get('./cmd/activeWorkbench');
+async function getCurrentWorkbench() {
+  ActuallyCurrentActiveWorkbench = activeWorkbench;
+  workbenchAndIconDataFromCad = JSON.parse(await $.get('./cmd/activeWorkbench'));
 
-  if (activeWorkbenchTemp !== undefined){
-    activeWorkbench = activeWorkbenchTemp;
-    
+
+
+  if (workbenchAndIconDataFromCad.currentWorkbenchName !== undefined) {
+    activeWorkbench = workbenchAndIconDataFromCad.currentWorkbenchName;
+
   }
-  
-  if(ActuallyCurrentActiveWorkbench != activeWorkbench){
+
+  if (ActuallyCurrentActiveWorkbench != activeWorkbench) {
     $("#currentWorkbench").val(activeWorkbench);
     buildToolGroupPalletDivs();
   }
-  
-  
+
+  $('#commandIcons').find('img').addClass('toolIconDisabled');
+
+
+
+
+
+  for (i = 0; i < workbenchAndIconDataFromCad.toolIcons.length; i++) {
+    if (workbenchAndIconDataFromCad.toolIcons[i].indexOf("&") == -1) $('#commandIcon_' + workbenchAndIconDataFromCad.toolIcons[i]).removeClass('toolIconDisabled');
+  }
+
+
+
+
+
+  // 'commandIcon_' 
+
+
 }
 
 
 activeWorkbench = "";
 
-async function setActiveWorkbench(workbenchToActivate){ 
-  
+async function setActiveWorkbench(workbenchToActivate) {
+
   bla = await $.get('./cmd/python Gui.activateWorkbench("' + workbenchToActivate + '")');
   activeWorkbench = workbenchToActivate;
   buildToolGroupPalletDivs();
@@ -622,7 +684,13 @@ async function showCommads() {
 
 
   for (var i = 0; i < toolbarGlobalObject.commandList.length; i++) {
+    
+    if (toolbarGlobalObject.commandList[i].iconFile == "mouse_pointer") toolbarGlobalObject.commandList[i].iconFile = toolbarGlobalObject.commandList[i].command;
+
+    toolbarGlobalObject.commandList[i].iconFile = toolbarGlobalObject.commandList[i].iconFile.toLowerCase().replace(/-/g, '_');
     currentCommand = toolbarGlobalObject.commandList[i];
+    
+    
 
     $('#commands').append('<option value="' + toolbarGlobalObject.commandList[i].command + ' ">' + toolbarGlobalObject.commandList[i].command + '</option>');
 
@@ -674,6 +742,3 @@ async function saveCommandIcon() {
   showCommads();
   buildToolGroupPalletDivs();
 }
-
-
-

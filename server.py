@@ -74,12 +74,12 @@ def actionList():
 	
 	for i in actions:
 		if (actions[i].isEnabled() == True):
-			commandsListingArry.append(actions[i].objectName() + "@")
-		else:
-			commandsListingArry.append(actions[i].objectName())
+			commandsListingArry.append(actions[i].objectName() )
+		# else:
+		# 	commandsListingArry.append(actions[i].objectName())
 	
-	
-	return json.dumps(commandsListingArry)
+	return commandsListingArry
+	#return json.dumps(commandsListingArry)
 
 
 #actionList()
@@ -151,7 +151,6 @@ from urllib.parse import unquote
 
 
 
-
 class Serv(BaseHTTPRequestHandler):
 
 	def do_GET(self):
@@ -171,7 +170,9 @@ class Serv(BaseHTTPRequestHandler):
 				elif (commandToRun == "listWorkbenches"):
 					myReturnMSG = str(Gui.listWorkbenches())
 				elif (commandToRun == "activeWorkbench"):
-					myReturnMSG = currentWorkbenchName
+					myReturnMSG = '{"currentWorkbenchName": "' + currentWorkbenchName + '","toolIcons":' + str(json.dumps(actionList())) + "}"
+				elif (commandToRun == "listCommadsEnabled"):
+					myReturnMSG = str(actionList())
 				elif (commandToRun[0:6] == "python"):
 					freeCadCommandToRun = commandToRun
 				else:
@@ -183,13 +184,22 @@ class Serv(BaseHTTPRequestHandler):
 						time.sleep(.1)
 					myReturnMSG += "" + currentWorkbenchName + ""
 
-		except:
-			print("failed command exicution")
-			myReturnMSG = "Error od some type"
+		except Exception as e: # (as opposed to except Exception, e:)
+			# ^ that will just look for two classes, Exception and e
+			# for the repr
+			print(repr(e))
+			# for just the message, or str(e), since print calls str under the hood
+			print(e)
+			# the arguments that the exception has been called with. 
+			# the first one is usually the message. (OSError is different, though)
+			print(e.args)
+			myReturnMSG = "Error of some type"
 		
 		self.send_response(200)
 		self.end_headers()
 		self.wfile.write(bytes(myReturnMSG, 'utf-8'))
+	def log_message(self, format, *args):
+		return
 
 def runTheServer():
 	httpd = HTTPServer(('0.0.0.0', 8000), Serv)
@@ -232,6 +242,7 @@ while 1:
 		currentWorkbenchName = Gui.activeWorkbench().name()
 		currentWorkbenchNameKnown = True
 		hideAllToolbars()
+		mw.findChild(QtGui.QDockWidget, "Combo View").show()
 		myReturnMSG = ""
 	
 	

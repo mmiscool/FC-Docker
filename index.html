@@ -21,6 +21,13 @@
     overflow: hidden;
   }
   
+  .toolIcon {
+    filter: grayscale(0%);
+  }
+  
+  .toolIconDisabled {
+    filter: grayscale(100%);
+  }
   
 ::-webkit-scrollbar {
   -webkit-appearance: none;
@@ -36,31 +43,24 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-<div onclick="$('#fileManager').show()" style="text-align: center; height: 75px; width:85px; position: absolute; top:1px; right:1px;  margin:1px;border-style: solid;background-color: white;">
-  <h4>File manager</h4>
-</div>
-
-<div onclick="$('#pythonConsole').show()" style="text-align: center; height: 75px; width:85px; position: absolute; top:75px; right:1px;  margin:1px;border-style: solid;background-color: white;">
-  <h4>python console</h4>
-</div>
-
 
 <div style="width:calc(100% - 0px); height:calc(100% - 0px);" onclick="$('#toolBarRightClickMenue').hide();">
-  <div style="width:calc(100% - 0px); height: 175px; ">
+  <div style="width:calc(100% - 0px); height: 185px; ">
 
     <select id="commands" onchange="doCommand(this.value);"></select>
     Workbench:<select id="currentWorkbench" onchange="setActiveWorkbench(this.value);"></select>
-    
+    <button onclick="$('#fileManager').show();$('#fileManagerIframe').attr('src', './files/');">File Manager</button>
+    <button onclick="$('#pythonConsole').show()" >Python Console</button>
 
 
-    <div id="commandIcons" style="width:calc(100% - 100px); height: 155px; overflow:scroll; border-style: dotted;white-space: nowrap;" oncontextmenu="
+    <div id="commandIcons" style="width:calc(100% - 0px); height: 155px; overflow:scroll; overflow-y: hidden; border-style: dotted;white-space: nowrap;" oncontextmenu="
     groupListIconRightClick(null ,null , event);
     return false;
     
     "><h1>Loading Tool Bars. Please wait</h1></div>
   </div>
 
-  <div id="application" style="height:calc(100% - 185px); width:calc(100% - 2px); padding:0px;">
+  <div id="application" style="height:calc(100% - 195px); width:calc(100% - 2px); padding:0px;">
 
   </div>
   <div id="settings" style="height:calc(100% - 165px); width:calc( 100% - 0px); overflow: scroll;">
@@ -98,7 +98,7 @@
   right: 25px;
   border: 3px solid RED;
   background-color: white;">
-  <button onclick="$('#fileManagerIframe').attr('src', './files/')">Refresh</button>
+  <button onclick="$('#fileManagerIframe').attr('src', './files/');">Refresh</button>
   <button onclick="$('#fileManager').hide()" style="position:Absolute;right:0px; top:0px; background-color:red; ">X</button>
   <br>
   <div style="position:Absolute; top:25px; bottom:0px; left:0px;right:0px;">
