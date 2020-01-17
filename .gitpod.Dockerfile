@@ -1,7 +1,7 @@
 FROM ubuntu:bionic
 RUN apt update
 # Install Docker
-RUN apt install curl uidmap iptables wget dirmngr apt-transport-https lsb-release ca-certificates software-properties-common gnupg-agent -y
+RUN apt install curl uidmap iptables wget dirmngr -y
 
 #RUN curl -fsSL https:/download.docker.com/linux/ubuntu/gpg | apt-key add -
 #RUN apt-key fingerprint 0EBFCD88
