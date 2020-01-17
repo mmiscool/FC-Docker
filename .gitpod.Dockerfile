@@ -5,7 +5,7 @@ RUN apt update \
 RUN apt update
 RUN apt-get install apt-transport-https ca-certificates curl software-properties-common -y
 RUN apt update
-RUN apt install docker-ce
+RUN apt install docker-ce -y
 
 
 # Install custom tools, runtime, etc. using apt-get
