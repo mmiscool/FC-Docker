@@ -1,18 +1,10 @@
 FROM ubuntu:bionic
 ENV HOME /root
-RUN apt update \
-		&& apt install software-properties-common --no-install-recommends -y
 RUN apt update
-RUN apt-get install apt-transport-https ca-certificates curl software-properties-common -y
-RUN apt update
-RUN apt install docker-ce -y
+# Install Docker
+RUN curl -fsSL https:/download.docker.com/linux/ubuntu/gpg | apt-key add -
+RUN apt-key fingerprint 0EBFCD88
+RUN add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+RUN apt-get update -y
+RUN apt-get install -y docker-ce docker-ce-cli containerd.io
 
-
-# Install custom tools, runtime, etc. using apt-get
-# For example, the command below would install "bastet" - a command line tetris clone:
-#
-# RUN sudo apt-get -q update && \
-#     sudo apt-get install -yq bastet && \
-#     sudo rm -rf /var/lib/apt/lists/*
-#
-# More information: https://www.gitpod.io/docs/42_config_docker/
