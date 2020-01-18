@@ -1,5 +1,5 @@
 ![Docker Cloud Build Status](https://img.shields.io/docker/cloud/build/mmiscool/fc-docker)
-
+[![Gitter](https://badges.gitter.im/FC-Docker/community.svg)](https://gitter.im/FC-Docker/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 # FC-Docker Run FreeCAD in a docker and make it accessible via the web browser
 
 Included in this package is a docker file that builds a FreeCAD environment that is accessible from the web browser. Rendering is done on the server side for everything.
