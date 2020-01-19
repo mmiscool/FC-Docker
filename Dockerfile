@@ -60,8 +60,10 @@ CMD ["/usr/bin/supervisord"]
 
 ADD server.py /server.py
 
-ADD settings.json settings.json
 ADD user.cfg /root/.FreeCAD/user.cfg
+
+ADD settings.json settings.json
+
 RUN ln /root/.FreeCAD/user.cfg /root/user.cfg
 ADD index.html /novnc/index.html
 ADD FC-APP.js /novnc/FC-APP.js

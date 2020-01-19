@@ -7,6 +7,8 @@ Gui.activateWorkbench("PartDesignWorkbench")
 
 
 from PySide import QtCore, QtGui
+
+
  
 def errorDialog(msg):
 	# Create a simple dialog QMessageBox
@@ -18,7 +20,9 @@ def errorDialog(msg):
 
 #-----------------------------------------
 
-
+class MyCoolFileDialog(QtGui.QFileDialog):
+	print("hello world")
+QtGui.QFileDialog = MyCoolFileDialog
 
 
 
@@ -63,7 +67,7 @@ def actionList():
 				actions[name] = i
 	for d in duplicates:
 		del actions[d]
-	print( dir(actions))
+	#print( dir(actions))
 	
 	
 
@@ -134,7 +138,7 @@ def hideAllToolbars(mode = 0 ):
 #-------------------------------------------set to full screen mode
 hideAllToolbars()
 mw.showFullScreen()
-mw.menuBar().hide()
+#mw.menuBar().hide()
 mw.findChild(QtGui.QDockWidget, "Combo View").show()
 
 
@@ -230,9 +234,6 @@ def stdoutIO(stdout=None):
 
 
 
-
-
-
 while 1:
 	
 	FreeCADGui.updateGui()
@@ -246,19 +247,17 @@ while 1:
 		myReturnMSG = ""
 	
 	
-	#time.sleep(.001)
+	time.sleep(.001)
 	if (freeCadCommandToRun != ""):
 		if (freeCadCommandToRun[0:6] == "python"):
 			freeCadCommandToRun = freeCadCommandToRun[7:]
 			#errorDialog(commandToRun)
-			#print("the command sent :" + commandToRun)
-			##myReturnMSG = str(eval(freeCadCommandToRun))
 			with stdoutIO() as s:
 				try:
 					exec(freeCadCommandToRun)
 				except:
 					print("Something wrong with the code")
-			print("out:", s.getvalue())
+			#print("out:", s.getvalue())
 			myReturnMSG = str(s.getvalue())
 			freeCadCommandToRun = ""
 

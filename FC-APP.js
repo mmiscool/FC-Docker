@@ -31,9 +31,9 @@ async function runPythonConsole(shouldIRuntheCommand = true) {
 
 
 
-if (getUrlVars("autoconnect")) {
-  window.history.pushState('FreeCAD', 'FreeCAD', '?autoconnect=true&reconnect=true&reconnect_delay=5000&resize=remote');
-}
+
+  
+
 
 
 function getUrlVars() {
@@ -454,7 +454,7 @@ async function loadIconPalletForSettings() {
   if (!iconPalletAlreadyLoaded) {
     $('#iconPalletForSettings').empty();
     iconPalletAlreadyLoaded = true;
-    iconlist = await $.get('/icons/list.txt');
+    iconlist = await $.get('./icons/list.txt');
     toolbarGlobalObject.listOfIcons = iconlist.replace(/\r\n/g, "\n").split("\n");
 
 
@@ -484,6 +484,9 @@ async function loadIconPalletForSettings() {
 
 async function callAfterLoading() {
 
+  await window.history.pushState('FreeCAD', 'FreeCAD', '?autoconnect=true&reconnect=true&reconnect_delay=5000&resize=remote&path=' + window.location.pathname);
+
+
 
   await $("#application").load('./vnc.html', function(responseTxt, statusTxt, xhr) {
 
@@ -511,7 +514,7 @@ async function callAfterLoading() {
   else {
     alert("No user settings present. Loading from settings file on server");
     console.log("No user settings present. Loading from settings file on server");
-    toolbarGlobalObject = await $.get('/files/settings.json');
+    toolbarGlobalObject = await $.get('./files/settings.json');
   }
 
   //loadIconPalletForSettings();
@@ -536,7 +539,7 @@ async function callAfterLoading() {
 async function setResolution() {
   yyy = parseInt($("#application").height()) - 1;
   xxx = parseInt($("#application").width()) - 1;
-  await $.get('/res/' + '~xrandr --fb ' + xxx + 'x' + yyy);
+  await $.get('./res/' + '~xrandr --fb ' + xxx + 'x' + yyy);
 }
 
 
@@ -556,7 +559,7 @@ async function doCommand(commandToDo) {
 
 
     commandToDo = commandToDo.replace("@", "");
-    bla = await $.get('/cmd/' + commandToDo);
+    bla = await $.get('./cmd/' + commandToDo);
     //alert(bla);
     if (bla.toUpperCase().indexOf("ERROR") > -1) alert(bla);
   }
