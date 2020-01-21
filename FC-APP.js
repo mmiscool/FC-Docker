@@ -514,7 +514,7 @@ async function callAfterLoading() {
   else {
     alert("No user settings present. Loading from settings file on server");
     console.log("No user settings present. Loading from settings file on server");
-    toolbarGlobalObject = await $.get('./files/settings.json');
+    toolbarGlobalObject = await $.get('./settings.json');
   }
 
   //loadIconPalletForSettings();
@@ -532,6 +532,13 @@ async function callAfterLoading() {
     $("#noVNC_fallback_error").hide();
 
   }, 1000);
+
+
+  window.setInterval(async function() {
+    //alert($('#currentWorkbench').has('option').length);
+    if ($('#currentWorkbench').has('option').length < 0) await loadWorkbenches();
+  }, 10000);
+
 
 
 }

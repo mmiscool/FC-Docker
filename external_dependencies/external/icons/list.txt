@@ -114,7 +114,11 @@ a4_portrait_iso7200td.svg
 a4_portrait_plain.svg
 accessories_calculator.svg
 accessories_text_editor.svg
+addbase.svg
+addfoldwall.svg
 addonmanager.svg
+addwall.svg
+air_bending_punch_distances.svg
 airplanedesign_workbench_icon.svg
 aluminium.svg
 angleconstraint.svg
@@ -1036,6 +1040,7 @@ preferences_raytracing.svg
 preferences_start.svg
 preferences_system.svg
 preferences_techdraw.svg
+press_brake_schematic.svg
 preview_rendered.svg
 preview_vector.svg
 process_stop.svg
@@ -1257,6 +1262,12 @@ sketcher_viewsection.svg
 sketcher_viewsketch.svg
 sketcherworkbench.svg
 slic3r_tools_workbench_icon.svg
+smextrude.svg
+smlogo.svg
+smunfold.svg
+smunfoldunattended.svg
+smunfoldupdate.svg
+smupdate.svg
 snap_angle.svg
 snap_center.svg
 snap_dimensions.svg

@@ -19,3 +19,6 @@
 [submodule "external_dependencies/external/Mod/a2plus"]
 	path = external_dependencies/external/Mod/a2plus
 	url = https://github.com/kbwbe/A2plus.git
+[submodule "external_dependencies/external/Mod/FreeCAD_SheetMetal"]
+	path = external_dependencies/external/Mod/FreeCAD_SheetMetal
+	url = https://github.com/shaise/FreeCAD_SheetMetal.git

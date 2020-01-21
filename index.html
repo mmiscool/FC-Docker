@@ -20,25 +20,29 @@
     border-width: thin;
     overflow: hidden;
   }
-  
+
   .toolIcon {
     filter: grayscale(0%);
   }
-  
+
+  .toolIcon:hover {
+    background-color: yellow;
+  }
+
   .toolIconDisabled {
     filter: grayscale(100%);
   }
-  
-::-webkit-scrollbar {
-  -webkit-appearance: none;
-  width: 25px;
-}
 
-::-webkit-scrollbar-thumb {
-  border-radius: 25px;
-  background-color: rgba(0,0,0,.5);
-  -webkit-box-shadow: 0 0 1px rgba(255,255,255,.5);
-}
+  ::-webkit-scrollbar {
+    -webkit-appearance: none;
+    width: 25px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    border-radius: 25px;
+    background-color: rgba(0, 0, 0, .5);
+    -webkit-box-shadow: 0 0 1px rgba(255, 255, 255, .5);
+  }
 </style>
 
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -47,17 +51,19 @@
 <div style="width:calc(100% - 0px); height:calc(100% - 0px);" onclick="$('#toolBarRightClickMenue').hide();">
   <div style="width:calc(100% - 0px); height: 185px; ">
 
-    <select id="commands" onchange="doCommand(this.value);"></select>
-    Workbench:<select id="currentWorkbench" onchange="setActiveWorkbench(this.value);"></select>
+    <select id="commands" onchange="doCommand(this.value);"></select> Workbench:
+    <select id="currentWorkbench" onchange="setActiveWorkbench(this.value);"></select>
     <button onclick="$('#fileManager').show();$('#fileManagerIframe').attr('src', './files/');">File Manager</button>
-    <button onclick="$('#pythonConsole').show()" >Python Console</button>
+    <button onclick="$('#pythonConsole').show()">Python Console</button>
 
 
     <div id="commandIcons" style="font-size: 15px; width:calc(100% - 0px); height: 155px; overflow:scroll; overflow-y: hidden; border-style: dotted;white-space: nowrap;" oncontextmenu="
     groupListIconRightClick(null ,null , event);
     return false;
     
-    "><h1>Loading Tool Bars. Please wait</h1></div>
+    ">
+      <h1>Loading Tool Bars. Please wait</h1>
+    </div>
   </div>
 
   <div id="application" style="height:calc(100% - 195px); width:calc(100% - 2px); padding:0px;">
@@ -117,8 +123,8 @@
   background-color: white;">
   <button onclick="runPythonConsole(false);" style="top:50px;height:50px;">clear</button>
   <textarea id="pythonCodeArea" style="top:50px;height:50px;width:calc(100% - 150px);">print("hello world")</textarea>
-  
-  
+
+
   <button onclick="runPythonConsole();" style="top:50px;height:50px;">Send</button>
   <button onclick="$('#pythonConsole').hide()" style="position:Absolute;right:0px; top:0px; background-color:red; ">X</button>
   <br>
@@ -126,8 +132,8 @@
     <div id="pythonCodeResponseAreaA" style="width:100%;height:50%;white-space:pre;overflow:scroll;font-family: monospace;"></div>
     <div id="pythonCodeResponseAreaB" style="width:100%;height:50%;white-space:pre;overflow:scroll;font-family: monospace;"></div>
   </div>
-  
-  
+
+
 
 </div>
 

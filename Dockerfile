@@ -62,7 +62,7 @@ ADD server.py /server.py
 
 ADD user.cfg /root/.FreeCAD/user.cfg
 
-ADD settings.json settings.json
+ADD settings.json /novnc/settings.json
 
 RUN ln /root/.FreeCAD/user.cfg /root/user.cfg
 ADD index.html /novnc/index.html

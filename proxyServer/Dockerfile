@@ -9,11 +9,12 @@ RUN pip3 install docker
 RUN apt install -y supervisor
 ADD html /html
 
-ADD supervisord.conf /etc/supervisor/conf.d/supervisord.conf
-CMD ["/usr/bin/supervisord"]
+#ADD supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+#CMD ["/usr/bin/supervisord"]
 
 
 ADD localhost.conf /etc/nginx/sites-available/default
-ADD sessions.py /sessions.py
-#CMD ["python3 /sessions.py"]
+ADD manager /manager
+CMD ls /fcUsers/
+CMD nginx & python3 /manager/sessions.py
 EXPOSE 80
