@@ -96,29 +96,32 @@ async function groupListIconRightClick(x, y, e) {
   //alert(e.pageX + "," + e.pageY);
 
 
-
+  
   if (y !== null) {
-
+    
     newButtonStuff = {
       onclick: "toolbarGlobalObject.toolGroups[" + x + "].icons.move(" + y + "," + y + "-1);buildToolGroupPalletDivs();",
-      text: "Move icon <",
+      text: "<",
     };
     $('#toolBarRightClickMenue').append($('<button>', newButtonStuff));
 
 
     newButtonStuff = {
       onclick: "toolbarGlobalObject.toolGroups[" + x + "].icons.move(" + y + "," + y + "+1);buildToolGroupPalletDivs();",
-      text: "Move icon >",
+      text: ">",
     };
     $('#toolBarRightClickMenue').append($('<button>', newButtonStuff));
-
-    $('#toolBarRightClickMenue').append("<br>");
 
     newButtonStuff = {
-      onclick: "toolbarGlobalObject.toolGroups[" + x + "].icons.splice(" + y + ",1);buildToolGroupPalletDivs();",
-      text: "Remove Icon",
+      onclick: `if(confirm('Confirm delete tool group')) {
+        toolbarGlobalObject.toolGroups[" + x + "].icons.splice(" + y + ",1);
+        buildToolGroupPalletDivs();
+        }`,
+      text: "X",
     };
     $('#toolBarRightClickMenue').append($('<button>', newButtonStuff));
+    
+    $('#toolBarRightClickMenue').append("Icon:");
 
     $('#toolBarRightClickMenue').append("<br>");
 
@@ -130,27 +133,30 @@ async function groupListIconRightClick(x, y, e) {
 
 
   if (x !== null) {
+
     newButtonStuff = {
       onclick: "toolbarGlobalObject.toolGroups.move(" + x + "," + x + "-1);buildToolGroupPalletDivs();",
-      text: "Move Group <",
+      text: " <",
     };
     $('#toolBarRightClickMenue').append($('<button>', newButtonStuff));
 
 
     newButtonStuff = {
       onclick: "toolbarGlobalObject.toolGroups.move(" + x + "," + x + "+1);buildToolGroupPalletDivs();",
-      text: "Move Group >",
+      text: ">",
     };
     $('#toolBarRightClickMenue').append($('<button>', newButtonStuff));
 
-
-    $('#toolBarRightClickMenue').append("<br>");
 
     newButtonStuff = {
-      onclick: "toolbarGlobalObject.toolGroups.splice(" + x + ",1);buildToolGroupPalletDivs();",
-      text: "Remove Group",
+      onclick: `if(confirm('Confirm delete tool group')){
+        toolbarGlobalObject.toolGroups.splice(" + x + ",1);
+        buildToolGroupPalletDivs();}`,
+      text: "X",
     };
     $('#toolBarRightClickMenue').append($('<button>', newButtonStuff));
+    
+    $('#toolBarRightClickMenue').append("Group");
 
     $('#toolBarRightClickMenue').append("<br>");
 
@@ -188,7 +194,10 @@ async function groupListIconRightClick(x, y, e) {
                 buildToolGroupPalletDivs();
                 
   							`,
+    style:"width:100%",
+  							
       text: "Toggle exclude From Workbench",
+      
     };
     $('#toolBarRightClickMenue').append($('<button>', newButtonStuff));
 
@@ -204,7 +213,8 @@ async function groupListIconRightClick(x, y, e) {
               createNewToolGroup();
               buildToolGroupPalletDivs();
               `,
-    text: "Create Tool Group",
+    text: "New Tool Group",
+    style:"width:100%",
   };
   $('#toolBarRightClickMenue').append($('<button>', newButtonStuff));
 
@@ -219,6 +229,7 @@ async function groupListIconRightClick(x, y, e) {
     						buildToolGroupPalletDivs();
     						`,
     text: "Rename Tool Group",
+    style:"width:100%",
   };
   $('#toolBarRightClickMenue').append($('<button>', newButtonStuff));
 
@@ -234,6 +245,7 @@ async function groupListIconRightClick(x, y, e) {
                 $("#application").hide();
                 buildToolGroupPalletDivs();
                 `,
+    style:"width:100%",
     text: "Edit Icons",
   };
   $('#toolBarRightClickMenue').append($('<button>', newButtonStuff));
@@ -248,6 +260,7 @@ async function groupListIconRightClick(x, y, e) {
               toolbarGlobalObject.widthOfIcons = prompt("toolbar icon size in pixels", toolbarGlobalObject.widthOfIcons);
               buildToolGroupPalletDivs();
 							`,
+    style:"width:100%",
     text: "Set icon size",
   };
   $('#toolBarRightClickMenue').append($('<button>', newButtonStuff));
@@ -270,6 +283,7 @@ async function groupListIconRightClick(x, y, e) {
 								// Remove anchor from body
 								document.body.removeChild(a);
 							`,
+    style:"width:100%",
     text: "Save Toolbar configuration",
   };
   $('#toolBarRightClickMenue').append($('<button>', newButtonStuff));
@@ -279,11 +293,18 @@ async function groupListIconRightClick(x, y, e) {
 
 
 
-
+  
 
 
   $("#toolBarRightClickMenue").show();
-  $("#toolBarRightClickMenue").css("left", e.pageX);
+  
+  if ( $( window ).width() - $("#toolBarRightClickMenue").width() < e.pageX){
+    $("#toolBarRightClickMenue").css("left", $( window ).width() - $("#toolBarRightClickMenue").width());
+  }else{
+    $("#toolBarRightClickMenue").css("left", e.pageX);
+  }
+  
+  
   $("#toolBarRightClickMenue").css("top", e.pageY);
   //toolbarGlobalObject.toolGroups[x].icons.splice(y, 1);
 
@@ -331,7 +352,7 @@ async function buildToolGroupPalletDivs() {
 
     widthOfDivCalculated = widthOfIcons;
     if (currentGroup.icons.length > 0) {
-      widthOfDivCalculated = widthOfDivCalculated * Math.ceil((currentGroup.icons.length) / Math.floor(120 / widthOfDivCalculated));
+      widthOfDivCalculated = widthOfDivCalculated * Math.ceil((currentGroup.icons.length) / Math.floor(90 / widthOfDivCalculated));
     }
 
 
@@ -578,10 +599,9 @@ async function doCommand(commandToDo) {
 
 
 async function loadWorkbenches() {
-  bla = "ERROR"
-  while (bla.indexOf("ERROR") > -1) {
+
     bla = await $.get('./cmd/listWorkbenches');
-  }
+
 
 
 
@@ -653,6 +673,10 @@ async function getCurrentWorkbench() {
     buildToolGroupPalletDivs();
   }
 
+  if($("#currentWorkbench").val() != activeWorkbench) $("#currentWorkbench").val(activeWorkbench);
+
+
+
   $('#commandIcons').find('img').addClass('toolIconDisabled');
 
 
@@ -660,7 +684,10 @@ async function getCurrentWorkbench() {
 
 
   for (i = 0; i < workbenchAndIconDataFromCad.toolIcons.length; i++) {
-    if (workbenchAndIconDataFromCad.toolIcons[i].indexOf("&") == -1) $('#commandIcon_' + workbenchAndIconDataFromCad.toolIcons[i]).removeClass('toolIconDisabled');
+    if (workbenchAndIconDataFromCad.toolIcons[i].indexOf("&") == -1) {
+      $('#commandIcon_' + workbenchAndIconDataFromCad.toolIcons[i]).removeClass('toolIconDisabled');
+      $('#commandIcons').find('img').addClass('toolIcon');
+    }
   }
 
 

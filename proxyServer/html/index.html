@@ -63,7 +63,7 @@
         }
     }
 
-    
+
     ipOfNewSession = "";
 
 
@@ -73,8 +73,27 @@
         await alert("session starting. Give it a few seconds");
 
         window.setInterval(async function() {
-            window.location.href = "./ip/" + ipOfNewSession + "/";
-        }, 10000);
+
+            $.get(
+                "./ip/" + ipOfNewSession + "/",
+                function(data, textStatus, jqXHR) {
+
+
+                    window.setInterval(async function() {
+
+
+                        window.location.href = "./ip/" + ipOfNewSession + "/";
+
+
+                    }, 6000);
+
+                    
+                }
+            );
+
+
+
+        }, 2000);
 
 
 

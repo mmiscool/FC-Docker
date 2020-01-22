@@ -2503,7 +2503,7 @@
       },
       {
          "command":"Draft_SetWorkingPlaneProxy",
-         "iconFile":"draft_setworkingplaneproxy",
+         "iconFile":"arch_building",
          "toolTip":"Draft_SetWorkingPlaneProxy",
          "groups":[
 
@@ -3663,7 +3663,7 @@
       },
       {
          "command":"Part_Boolean",
-         "iconFile":"part_boolean",
+         "iconFile":"part_booleans",
          "toolTip":"Part_Boolean",
          "groups":[
 
@@ -3727,7 +3727,7 @@
       },
       {
          "command":"Part_CompCompoundTools",
-         "iconFile":"part_compcompoundtools",
+         "iconFile":"part_compound",
          "toolTip":"Part_CompCompoundTools",
          "groups":[
 
@@ -3735,7 +3735,7 @@
       },
       {
          "command":"Part_CompJoinFeatures",
-         "iconFile":"part_compjoinfeatures",
+         "iconFile":"part_offset",
          "toolTip":"Part_CompJoinFeatures",
          "groups":[
 
@@ -3743,7 +3743,7 @@
       },
       {
          "command":"Part_CompOffset",
-         "iconFile":"part_compoffset",
+         "iconFile":"part_offset",
          "toolTip":"Part_CompOffset",
          "groups":[
 
@@ -6239,7 +6239,7 @@
       },
       {
          "command":"Std_DlgPreferences",
-         "iconFile":"std_dlgpreferences",
+         "iconFile":"preferences_system",
          "toolTip":"Std_DlgPreferences",
          "groups":[
 
@@ -6327,7 +6327,7 @@
       },
       {
          "command":"Std_Edit",
-         "iconFile":"std_edit",
+         "iconFile":"edit_edit",
          "toolTip":"Std_Edit",
          "groups":[
 
@@ -6335,7 +6335,7 @@
       },
       {
          "command":"Std_Export",
-         "iconFile":"std_export",
+         "iconFile":"document",
          "toolTip":"Std_Export",
          "groups":[
 
@@ -6535,7 +6535,7 @@
       },
       {
          "command":"Std_Paste",
-         "iconFile":"std_paste",
+         "iconFile":"edit_paste",
          "toolTip":"Std_Paste",
          "groups":[
 
@@ -7516,7 +7516,9 @@
             "Spreadsheet_Format",
             "Draft_Snap",
             "Draft_Basic",
-            "Sheet_meTtal"
+            "Sheet_meTtal",
+            "Part_Create",
+            "Part_Bool"
          ]
       },
       {
@@ -7538,7 +7540,10 @@
             "Spreadsheet_Format",
             "Draft_Basic",
             "Draft_Snap",
-            "Sheet_meTtal"
+            "Sheet_meTtal",
+            "Macro",
+            "Part_Create",
+            "Part_Bool"
          ]
       },
       {
@@ -7564,7 +7569,9 @@
             "Spreadsheet_Format",
             "Draft_Basic",
             "Draft_Snap",
-            "Sheet_meTtal"
+            "Sheet_meTtal",
+            "Part_Create",
+            "Part_Bool"
          ]
       },
       {
@@ -7587,7 +7594,10 @@
             "Spreadsheet_tools",
             "Spreadsheet_Format",
             "Draft_Basic",
-            "Draft_Snap"
+            "Draft_Snap",
+            "Part_Create",
+            "Part_Bool",
+            "Sheet_meTtal"
          ]
       },
       {
@@ -7614,7 +7624,9 @@
             "FEM_Mesh",
             "Spreadsheet_tools",
             "Spreadsheet_Format",
-            "Sheet_meTtal"
+            "Sheet_meTtal",
+            "Part_Create",
+            "Part_Bool"
          ]
       },
       {
@@ -7643,7 +7655,9 @@
             "Spreadsheet_Format",
             "Draft_Basic",
             "Draft_Snap",
-            "Sheet_meTtal"
+            "Sheet_meTtal",
+            "Part_Create",
+            "Part_Bool"
          ]
       },
       {
@@ -7652,8 +7666,6 @@
             "Part_Design",
             "Sketch_Primitives",
             "Sketch_Constraints",
-            "Part_Design_Additive_Primitives",
-            "Part_Design_Subtractive_Primitives",
             "Sketch_Tools",
             "Macro_debug",
             "Macro",
@@ -7672,7 +7684,9 @@
             "Spreadsheet_Format",
             "Draft_Basic",
             "Draft_Snap",
-            "Sheet_meTtal"
+            "Sheet_meTtal",
+            "Part_Design_Additive_Primitives",
+            "Part_Design_Subtractive_Primitives"
          ]
       },
       {
@@ -7699,7 +7713,9 @@
             "FEM_Model",
             "Draft_Basic",
             "Draft_Snap",
-            "Sheet_meTtal"
+            "Sheet_meTtal",
+            "Part_Create",
+            "Part_Bool"
          ]
       },
       {
@@ -7725,7 +7741,10 @@
             "FEM_Utilities",
             "FEM_Solve",
             "FEM_Results",
-            "FEM_Mesh"
+            "FEM_Mesh",
+            "Part_Create",
+            "Part_Bool",
+            "Patern"
          ]
       }
    ],
@@ -7735,7 +7754,9 @@
          "icons":[
             "Std_New",
             "Std_Open",
-            "Std_Save"
+            "Std_Save",
+            "Std_Export",
+            "Std_SaveAs"
          ]
       },
       {
@@ -7743,18 +7764,45 @@
          "icons":[
             "Std_Copy",
             "Std_Cut",
-            "Std_Delete"
+            "Std_Delete",
+            "Std_Paste",
+            "Std_Edit",
+            "Std_DlgPreferences"
+         ]
+      },
+      {
+         "name":"Part_Create",
+         "icons":[
+            "Sketcher_NewSketch",
+            "Part_Extrude",
+            "Part_Revolve",
+            "Part_Mirror",
+            "Part_Fillet",
+            "Part_Chamfer",
+            "Part_RuledSurface",
+            "Part_Loft",
+            "Part_Sweep",
+            "Part_Offset",
+            "Part_Offset2D",
+            "Part_Thickness"
+         ]
+      },
+      {
+         "name":"Part_Bool",
+         "icons":[
+            "Part_Fuse",
+            "Part_ExplodeCompound"
          ]
       },
       {
          "name":"Sheet_meTtal",
          "icons":[
+            "SMBase",
             "SMExtrudeFace",
             "SMMakeWall",
             "SMFoldWall",
             "SMUnfold",
-            "SMUnfoldUnattended",
-            "SMBase"
+            "SMUnfoldUnattended"
          ]
       },
       {
@@ -7770,7 +7818,8 @@
             "Draft_Text",
             "Draft_Move",
             "Draft_DelPoint",
-            "Draft_FlipDimension"
+            "Draft_FlipDimension",
+            "Draft_SetWorkingPlaneProxy"
          ]
       },
       {
@@ -7850,7 +7899,9 @@
             "Sketcher_LeaveSketch",
             "Sketcher_External",
             "Sketcher_ToggleConstruction",
-            "Sketcher_Trimming"
+            "Sketcher_Trimming",
+            "Sketcher_EditSketch",
+            "Sketcher_NewSketch"
          ]
       },
       {
@@ -7903,7 +7954,6 @@
             "PartDesign_AdditiveBox",
             "PartDesign_AdditiveCone",
             "PartDesign_AdditiveCylinder",
-            "PartDesign_AdditiveEllipsoid",
             "PartDesign_AdditiveEllipsoid",
             "PartDesign_AdditiveLoft",
             "PartDesign_AdditivePipe",
@@ -8039,5 +8089,5 @@
          ]
       }
    ],
-   "widthOfIcons":"40"
+   "widthOfIcons":"30"
 }
