@@ -140,6 +140,7 @@ hideAllToolbars()
 mw.showFullScreen()
 mw.menuBar().hide()
 mw.findChild(QtGui.QDockWidget, "Combo View").show()
+#Gui.getMainWindow().findChild(QtGui.QMdiArea).findChild(QtGui.QTabBar).hide()
 
 
 #--------------------------------------------------Server stuff

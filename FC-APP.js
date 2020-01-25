@@ -114,7 +114,7 @@ async function groupListIconRightClick(x, y, e) {
 
     newButtonStuff = {
       onclick: `if(confirm('Confirm delete tool group')) {
-        toolbarGlobalObject.toolGroups[" + x + "].icons.splice(" + y + ",1);
+        toolbarGlobalObject.toolGroups[` + x + `].icons.splice(` + y + `,1);
         buildToolGroupPalletDivs();
         }`,
       text: "X",
@@ -149,8 +149,8 @@ async function groupListIconRightClick(x, y, e) {
 
 
     newButtonStuff = {
-      onclick: `if(confirm('Confirm delete tool group')){
-        toolbarGlobalObject.toolGroups.splice(" + x + ",1);
+      onclick: `if(confirm('Confirm remove tool group')){
+        toolbarGlobalObject.toolGroups.splice(` + x + `,1);
         buildToolGroupPalletDivs();}`,
       text: "X",
     };
