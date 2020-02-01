@@ -34,11 +34,6 @@ ADD external_dependencies/external/Mod /root/.FreeCAD/Mod
 
 ADD system.jwmrc /etc/jwm/system.jwmrc
 
-# RUN apt remove freecad -y 
-# RUN add-apt-repository ppa:freecad-maintainers/freecad-daily -y 
-# RUN apt-get update 
-# RUN apt-get install freecad-daily -y 
-
 EXPOSE 80
 
 WORKDIR /root/
