@@ -1,6 +1,6 @@
 # This project is being discontinued in favor of focusing development effort on https://github.com/xibyte/jsketcher
 #JSketcher is a fully browser based parametric 3d modeler that uses opencascade and a constraint based 2d sketcher. 
-Feel free to fork and contine using if you like. I highly recomend taking a look at the JSketcer project as there are some major changes comming for it that will increase stability and address referenced geometry.
+Feel free to fork and contine using this if you like. I highly recomend taking a look at the JSketcer project as there are some major changes comming for it that will increase stability and address referenced geometry.
 
 ![Docker Cloud Build Status](https://img.shields.io/docker/cloud/build/mmiscool/fc-docker)
 [![Gitter](https://badges.gitter.im/FC-Docker/community.svg)](https://gitter.im/FC-Docker/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
